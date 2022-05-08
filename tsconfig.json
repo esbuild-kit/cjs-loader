@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"outDir": "dist",
+		"target": "esnext"
+
+		// Prevents mts -> mjs conversion
+		// "moduleResolution": "node",
+	},
+	"include": [
+		"src",
+		"tests"
+	],
+	"exclude": [
+		"tests/fixtures"
+	]
+}
