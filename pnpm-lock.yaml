@@ -3387,7 +3387,7 @@ packages:
     dev: true
 
   github.com/esbuild-kit/core-utils/05d34ac22bc0a6f45dcdcb373024d018bc9a74a5:
-    resolution: {commit: 05d34ac22bc0a6f45dcdcb373024d018bc9a74a5, repo: git+ssh://git@github.com/esbuild-kit/core-utils.git, type: git}
+    resolution: {tarball: https://codeload.github.com/esbuild-kit/core-utils/tar.gz/05d34ac22bc0a6f45dcdcb373024d018bc9a74a5}
     name: '@esbuild-kit/core-utils'
     version: 0.0.0-semantic-release
     dependencies:
