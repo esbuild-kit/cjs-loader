@@ -4,7 +4,7 @@ Node.js `require()` hook to instantaneously transform ESM & TypeScript to Common
 
 ### Features
 - Transforms ESM & TypeScript to CommonJS on demand
-- Supports TS extensions `.cjs` + `.mjs` (and `.cts` & `.mts`)
+- Supports TS extensions `.cjs` & `.mjs` (+ `.cts` & `.mts`)
 - Cached for performance boost
 - Supports Node.js v12.16.2+
 - Handles `node:` import prefixes
