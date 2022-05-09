@@ -1,15 +1,13 @@
-# cjs-loader
+# @esbuild-kit/cjs-loader
 
-Node.js `require()` hook to transform ESM & TypeScript to CommonJS on demand using [esbuild](https://esbuild.github.io/).
-
+Node.js `require()` hook to instantaneously transform ESM & TypeScript to CommonJS on demand using [esbuild](https://esbuild.github.io/).
 
 ### Features
-- Converts ESM & TypeScript to CommonJS
-- Supports new extensions `.cjs` + `.mjs` (and `.cts` &`.mts`)
-- Supports Node.js 12.16.2 and up
-- Handles `node:` import prefixes
-- Sourcemap support
+- Transforms ESM & TypeScript to CommonJS on demand
+- Supports TS extensions `.cjs` + `.mjs` (and `.cts` & `.mts`)
 - Cached for performance boost
+- Supports Node.js v12.16.2+
+- Handles `node:` import prefixes
 
 > **Tip:**
 >
