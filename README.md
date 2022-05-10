@@ -1,4 +1,4 @@
-# @esbuild-kit/cjs-loader
+# cjs-loader
 
 Node.js `require()` hook to instantaneously transform ESM & TypeScript to CommonJS on demand using [esbuild](https://esbuild.github.io/).
 
