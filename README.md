@@ -44,6 +44,6 @@ ESBK_DISABLE_CACHE=1 node -r @esbuild/cjs-loader ./file.js
 
 ## Related
 
-- [tsx](https://github.com/esbuild-kit/tsx) - Node.js runtime powered by esbuild using `@esbuild-kit/cjs-loader` and `@esbuild-kit/esb-loader`.
+- [tsx](https://github.com/esbuild-kit/tsx) - Node.js runtime powered by esbuild using [`@esbuild-kit/cjs-loader`](https://github.com/esbuild-kit/cjs-loader) and [`@esbuild-kit/esm-loader`](https://github.com/esbuild-kit/esm-loader).
 
 - [@esbuild-kit/esm-loader](https://github.com/esbuild-kit/esm-loader) - TypeScript to ESM transpiler using the Node.js loader API.
