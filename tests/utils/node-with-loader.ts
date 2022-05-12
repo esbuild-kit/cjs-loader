@@ -23,8 +23,9 @@ export const nodeWithLoader = async (
 		],
 		nodePath: options.nodePath,
 		cwd: options.cwd,
+		reject: false,
 	},
-).catch(error => error);
+);
 
 export async function createNode(
 	nodeVersion: string,
