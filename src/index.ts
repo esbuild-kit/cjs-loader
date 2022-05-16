@@ -91,7 +91,11 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 				isMain,
 				options,
 			);
-		} catch {}
+		} catch (error) {
+			if ((error as any).code !== 'MODULE_NOT_FOUND') {
+				throw error;
+			}
+		}
 	}
 
 	return resolveFilename.call(this, request, parent, isMain, options);
