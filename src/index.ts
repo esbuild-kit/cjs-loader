@@ -65,13 +65,11 @@ const extensions = Module._extensions;
 
 // Add support for "node:" protocol
 const resolveFilename = Module._resolveFilename;
-Module._resolveFilename = function (...resolveFilenameArguments) {
-	const [request, fromFile] = resolveFilenameArguments;
-
+Module._resolveFilename = function (request, parent, isMain, options) {
 	// Added in v12.20.0
 	// https://nodejs.org/api/esm.html#esm_node_imports
 	if (request.startsWith('node:')) {
-		resolveFilenameArguments[0] = request.slice(5);
+		request = request.slice(5);
 	}
 
 	/**
@@ -83,10 +81,18 @@ Module._resolveFilename = function (...resolveFilenameArguments) {
 	 */
 	if (
 		/\.[cm]js$/.test(request)
-		&& (fromFile && isTsFilePatten.test(fromFile.filename))
+		&& (parent && isTsFilePatten.test(parent.filename))
 	) {
-		resolveFilenameArguments[0] = `${request.slice(0, -2)}ts`;
+		try {
+			return resolveFilename.call(
+				this,
+				`${request.slice(0, -2)}ts`,
+				parent,
+				isMain,
+				options,
+			);
+		} catch {}
 	}
 
-	return resolveFilename.apply(this, resolveFilenameArguments);
+	return resolveFilename.call(this, request, parent, isMain, options);
 };
