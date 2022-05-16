@@ -10,5 +10,10 @@ declare global {
 
 declare module 'module' {
 	export const _extensions: NodeJS.RequireExtensions;
-	export function _resolveFilename(filename: string, module: any): string;
+	export function _resolveFilename(
+		request: string,
+		parent: any,
+		isMain: boolean,
+		options?: any,
+	): string;
 }
