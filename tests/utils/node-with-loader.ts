@@ -52,12 +52,21 @@ export async function createNode(
 		import(
 			filePath: string,
 			options?: {
-				typescript?: boolean;
+				mode?: 'commonjs' | 'typescript';
 			},
 		) {
+			let extension = 'js';
+
+			const mode = options?.mode;
+			if (mode === 'typescript') {
+				extension = 'ts';
+			} else if (mode === 'commonjs') {
+				extension = 'cjs';
+			}
+
 			return nodeWithLoader({
 				args: [
-					`./import-file${options?.typescript ? '.ts' : '.js'}`,
+					`./import-file.${extension}`,
 					filePath,
 				],
 				nodePath: node.path,

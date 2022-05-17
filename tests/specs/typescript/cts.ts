@@ -5,7 +5,7 @@ import { nodeSupportsImport } from '../../utils/node-supports-import';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('.cts extension', ({ describe }) => {
-		const output = 'loaded ts-ext-cts/index.cts true true';
+		const output = 'loaded ts-ext-cts/index.cts true true true';
 
 		describe('full path', ({ test }) => {
 			const importPath = './lib/ts-ext-cts/index.cts';
@@ -40,7 +40,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 
 			test('Import', async () => {
-				const nodeProcess = await node.import(importPath, { typescript: true });
+				const nodeProcess = await node.import(importPath, { mode: 'typescript' });
 
 				if (semver.satisfies(node.version, nodeSupportsImport)) {
 					expect(nodeProcess.stderr).toMatch('Cannot find module');

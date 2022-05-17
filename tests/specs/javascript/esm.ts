@@ -6,7 +6,7 @@ import { nodeSupportsImport } from '../../utils/node-supports-import';
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('Load ESM', ({ describe }) => {
 		describe('.mjs extension', ({ describe }) => {
-			const output = 'loaded esm-ext-mjs/index.mjs true true';
+			const output = 'loaded esm-ext-mjs/index.mjs true true true';
 
 			describe('full path', ({ test }) => {
 				const importPath = './lib/esm-ext-mjs/index.mjs';
@@ -22,7 +22,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				});
 
 				test('TypeScript Import', async () => {
-					const nodeProcess = await node.import(importPath, { typescript: true });
+					const nodeProcess = await node.import(importPath, { mode: 'typescript' });
 					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
 				});
 
@@ -77,7 +77,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 		});
 
 		describe('.js extension', ({ describe }) => {
-			const output = 'loaded esm-ext-js/index.js true true';
+			const output = 'loaded esm-ext-js/index.js true true true';
 
 			describe('full path', ({ test }) => {
 				const importPath = './lib/esm-ext-js/index.js';
@@ -89,12 +89,12 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 				test('Import', async () => {
 					const nodeProcess = await node.import(importPath);
+					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+				});
 
-					if (semver.satisfies(node.version, nodeSupportsImport)) {
-						expect(nodeProcess.stdout).toBe(`${output}\n{"default":{"default":1234}}`);
-					} else {
-						expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
-					}
+				test('CommonJS Import', async () => {
+					const nodeProcess = await node.import(importPath, { mode: 'commonjs' });
+					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
 				});
 
 				test('Require', async () => {
