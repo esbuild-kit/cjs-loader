@@ -22,7 +22,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				});
 
 				test('TypeScript Import', async () => {
-					const nodeProcess = await node.import(importPath, { typescript: true });
+					const nodeProcess = await node.import(importPath, { mode: 'typescript' });
 					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
 				});
 
@@ -89,12 +89,12 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 				test('Import', async () => {
 					const nodeProcess = await node.import(importPath);
+					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+				});
 
-					if (semver.satisfies(node.version, nodeSupportsImport)) {
-						expect(nodeProcess.stdout).toBe(`${output}\n{"default":{"default":1234}}`);
-					} else {
-						expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
-					}
+				test('CommonJS Import', async () => {
+					const nodeProcess = await node.import(importPath, { mode: 'commonjs' });
+					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
 				});
 
 				test('Require', async () => {
