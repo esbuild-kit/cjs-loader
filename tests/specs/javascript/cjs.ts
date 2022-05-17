@@ -22,7 +22,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				});
 
 				test('TypeScript Import', async () => {
-					const nodeProcess = await node.import(importPath, { typescript: true });
+					const nodeProcess = await node.import(importPath, { mode: 'typescript' });
 					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
 				});
 
