@@ -6,7 +6,7 @@ import { nodeSupportsImport } from '../../utils/node-supports-import';
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('Load ESM', ({ describe }) => {
 		describe('.mjs extension', ({ describe }) => {
-			const output = 'loaded esm-ext-mjs/index.mjs true true';
+			const output = 'loaded esm-ext-mjs/index.mjs true true true';
 
 			describe('full path', ({ test }) => {
 				const importPath = './lib/esm-ext-mjs/index.mjs';
@@ -77,7 +77,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 		});
 
 		describe('.js extension', ({ describe }) => {
-			const output = 'loaded esm-ext-js/index.js true true';
+			const output = 'loaded esm-ext-js/index.js true true true';
 
 			describe('full path', ({ test }) => {
 				const importPath = './lib/esm-ext-js/index.js';

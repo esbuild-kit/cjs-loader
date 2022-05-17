@@ -5,7 +5,7 @@ import { nodeSupportsImport } from '../../utils/node-supports-import';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('.jsx extension', ({ describe }) => {
-		const output = 'loaded ts-ext-jsx/index.jsx true true';
+		const output = 'loaded ts-ext-jsx/index.jsx true true true';
 
 		describe('full path', ({ test }) => {
 			const importPath = './lib/ts-ext-jsx/index.jsx';
