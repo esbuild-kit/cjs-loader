@@ -40,7 +40,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 
 			test('Import', async () => {
-				const nodeProcess = await node.import(importPath, { 'mode': 'typescript' });
+				const nodeProcess = await node.import(importPath, { mode: 'typescript' });
 
 				if (semver.satisfies(node.version, nodeSupportsImport)) {
 					expect(nodeProcess.stderr).toMatch('Cannot find module');
