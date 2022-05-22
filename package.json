@@ -1,5 +1,5 @@
 {
-	"name": "@esbuild-kit/cjs-loader",
+	"name": "cjs-loader-fix",
 	"version": "0.0.0-semantic-release",
 	"publishConfig": {
 		"access": "public"
