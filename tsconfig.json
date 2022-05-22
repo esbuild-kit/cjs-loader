@@ -6,10 +6,15 @@
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"outDir": "dist",
-		"target": "esnext"
+		"target": "esnext",
 
 		// Prevents mts -> mjs conversion
 		// "moduleResolution": "node",
+		"paths": {
+			"utils/*": [
+				"./tests/utils/*"
+			]
+		}
 	},
 	"include": [
 		"src",

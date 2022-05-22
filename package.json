@@ -33,7 +33,8 @@
 	},
 	"dependencies": {
 		"@esbuild-kit/core-utils": "^1.1.1",
-		"get-tsconfig": "^3.0.1"
+		"get-tsconfig": "^3.0.1",
+		"tsconfig-paths": "^4.0.0"
 	},
 	"devDependencies": {
 		"@pvtnbr/eslint-config": "^0.22.0",

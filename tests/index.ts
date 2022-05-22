@@ -1,5 +1,5 @@
 import { describe } from 'manten';
-import { createNode } from './utils/node-with-loader';
+import { createNode } from 'utils/node-with-loader';
 
 const nodeVersions = [
 	'12.16.2', // Pre ESM import
