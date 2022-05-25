@@ -3,6 +3,7 @@ import Module from 'module';
 import {
 	transformSync,
 	installSourceMapSupport,
+	resolveTsPath,
 } from '@esbuild-kit/core-utils';
 import getTsconfig from 'get-tsconfig';
 import { loadConfig, createMatchPath } from 'tsconfig-paths';
@@ -83,29 +84,24 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 	}
 
 	/**
-			* Typescript 4.6.0 behavior seems to be that if `.mjs` is specified,
-			* it converts it to mts without even testing if it exists, and any consideration for
-			* whether the mjs path actually exists.
-			*
-			* What if we actually want to import a mjs file? with allowJs enabled?
-			*/
-	if (
-		/\.[cm]js$/.test(request)
-				&& parent
-				&& isTsFilePatten.test(parent.filename)
-	) {
-		try {
-			return resolveFilename.call(
-				this,
-								`${request.slice(0, -2)}ts`,
-								parent,
-								isMain,
-								options,
-			);
-		} catch (error) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			if ((error as any).code !== 'MODULE_NOT_FOUND') {
-				throw error;
+	 * Typescript gives .ts, .cts, or .mts priority over actual .js, .cjs, or .mjs extensions
+	 */
+	if (parent && isTsFilePatten.test(parent.filename)) {
+		const tsPath = resolveTsPath(request);
+
+		if (tsPath) {
+			try {
+				return resolveFilename.call(
+					this,
+					tsPath,
+					parent,
+					isMain,
+					options,
+				);
+			} catch (error) {
+				if ((error as any).code !== 'MODULE_NOT_FOUND') {
+					throw error;
+				}
 			}
 		}
 	}
