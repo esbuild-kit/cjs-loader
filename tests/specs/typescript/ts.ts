@@ -5,7 +5,7 @@ import { nodeSupportsImport } from '../../utils/node-supports-import';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('.ts extension', ({ describe }) => {
-		const output = 'loaded ts-ext-ts/index.ts true true true';
+		const output = 'loaded ts-ext-ts/index.ts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true}';
 
 		describe('full path', ({ test }) => {
 			const importPath = './lib/ts-ext-ts/index.ts';
