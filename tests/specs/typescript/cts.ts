@@ -5,7 +5,7 @@ import { nodeSupportsImport } from '../../utils/node-supports-import';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('.cts extension', ({ describe }) => {
-		const output = 'loaded ts-ext-cts/index.cts true true true';
+		const output = 'loaded ts-ext-cts/index.cts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true}';
 
 		describe('full path', ({ test }) => {
 			const importPath = './lib/ts-ext-cts/index.cts';
