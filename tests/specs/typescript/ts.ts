@@ -81,11 +81,11 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 		describe('extensionless with subextension', ({ test }) => {
 			const importPath = './lib/ts-ext-ts/index.tsx';
-			const output = 'loaded ts-ext-ts/index.tsx.ts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true}';
+			const outputSubextension = 'loaded ts-ext-ts/index.tsx.ts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true}';
 
 			test('Load', async () => {
 				const nodeProcess = await node.load(importPath);
-				expect(nodeProcess.stdout).toBe(output);
+				expect(nodeProcess.stdout).toBe(outputSubextension);
 			});
 
 			test('Import', async () => {
@@ -94,13 +94,13 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				if (semver.satisfies(node.version, nodeSupportsImport)) {
 					expect(nodeProcess.stderr).toMatch('Cannot find module');
 				} else {
-					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+					expect(nodeProcess.stdout).toBe(`${outputSubextension}\n{"default":1234}`);
 				}
 			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath);
-				expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+				expect(nodeProcess.stdout).toBe(`${outputSubextension}\n{"default":1234}`);
 			});
 		});
 
