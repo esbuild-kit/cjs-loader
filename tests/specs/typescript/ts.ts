@@ -5,7 +5,7 @@ import { nodeSupportsImport } from '../../utils/node-supports-import';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('.ts extension', ({ describe }) => {
-		const output = 'loaded ts-ext-ts/index.ts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true}';
+		const output = 'loaded ts-ext-ts/index.ts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true,"import.meta.url":true}';
 
 		describe('full path', ({ test }) => {
 			const importPath = './lib/ts-ext-ts/index.ts';
@@ -81,7 +81,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 		describe('extensionless with subextension', ({ test }) => {
 			const importPath = './lib/ts-ext-ts/index.tsx';
-			const outputSubextension = 'loaded ts-ext-ts/index.tsx.ts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true}';
+			const outputSubextension = 'loaded ts-ext-ts/index.tsx.ts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true,"import.meta.url":true}';
 
 			test('Load', async () => {
 				const nodeProcess = await node.load(importPath);
