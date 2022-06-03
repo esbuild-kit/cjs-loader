@@ -16,6 +16,7 @@ console.log(
 				};
 			}
 		})(),
+		'import.meta.url': Boolean(import.meta.url),
 	}),
 );
 

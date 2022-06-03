@@ -5,7 +5,7 @@ import { nodeSupportsImport } from '../../utils/node-supports-import';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('.mts extension', ({ describe }) => {
-		const output = 'loaded ts-ext-mts/index.mts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true}';
+		const output = 'loaded ts-ext-mts/index.mts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true,"import.meta.url":true}';
 
 		describe('full path', ({ test }) => {
 			const importPath = './lib/ts-ext-mts/index.mts';
