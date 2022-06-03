@@ -15,7 +15,7 @@ specifiers:
   typescript: ^4.6.4
 
 dependencies:
-  '@esbuild-kit/core-utils': 1.2.1
+  '@esbuild-kit/core-utils': github.com/esbuild-kit/core-utils/afdeead08d9648dcc790911c5fc81063a70e2fb8
   get-tsconfig: 3.0.1
 
 devDependencies:
@@ -52,12 +52,6 @@ packages:
       chalk: 2.4.2
       js-tokens: 4.0.0
     dev: true
-
-  /@esbuild-kit/core-utils/1.2.1:
-    resolution: {integrity: sha512-zNtrwZ/754OMs6joIQIxsdOA3rjhde7Vt/IzkgNnCcQrwUDG5iHmlv9vhlHzyg+BZ6Cp519lrkMKlTCEW00Kpw==}
-    dependencies:
-      esbuild: 0.14.38
-    dev: false
 
   /@eslint/eslintrc/1.2.3:
     resolution: {integrity: sha512-uGo44hIwoLGNyduRpjdEpovcbMdd+Nv7amtmJxnKmI8xj6yd5LncmSwDa5NgX/41lIFJtkjD6YdVfgEzPfJ5UA==}
@@ -3676,3 +3670,11 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  github.com/esbuild-kit/core-utils/afdeead08d9648dcc790911c5fc81063a70e2fb8:
+    resolution: {tarball: https://codeload.github.com/esbuild-kit/core-utils/tar.gz/afdeead08d9648dcc790911c5fc81063a70e2fb8}
+    name: '@esbuild-kit/core-utils'
+    version: 0.0.0-semantic-release
+    dependencies:
+      esbuild: 0.14.38
+    dev: false
