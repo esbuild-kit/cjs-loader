@@ -8,7 +8,7 @@ specifiers:
   eslint: ^8.15.0
   execa: ^6.1.0
   get-node: ^12.1.0
-  get-tsconfig: ^3.0.1
+  get-tsconfig: github:privatenumber/get-tsconfig#built/named-exports
   manten: ^0.1.0
   pkgroll: ^1.3.0
   semver: ^7.3.7
@@ -16,7 +16,7 @@ specifiers:
 
 dependencies:
   '@esbuild-kit/core-utils': 1.3.0
-  get-tsconfig: 3.0.1
+  get-tsconfig: github.com/privatenumber/get-tsconfig/33954f1eac01b6da0c62de8436b51af9b8485b02
 
 devDependencies:
   '@pvtnbr/eslint-config': 0.22.0_hcfsmds2fshutdssjqluwm76uu
@@ -2012,10 +2012,6 @@ packages:
       get-intrinsic: 1.1.1
     dev: true
 
-  /get-tsconfig/3.0.1:
-    resolution: {integrity: sha512-+m30eQjbcf3xMNdnacXH5IDAKUMbI7Mhbf3e1BHif1FzBlUhBzBlmOVc7kL4+kB035l8OCyBdI3dNXZ3of9HqA==}
-    dev: false
-
   /glob-parent/5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
     engines: {node: '>= 6'}
@@ -3676,3 +3672,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  github.com/privatenumber/get-tsconfig/33954f1eac01b6da0c62de8436b51af9b8485b02:
+    resolution: {tarball: https://codeload.github.com/privatenumber/get-tsconfig/tar.gz/33954f1eac01b6da0c62de8436b51af9b8485b02}
+    name: get-tsconfig
+    version: 0.0.0-semantic-release
+    dev: false
