@@ -8,6 +8,7 @@ Node.js `require()` hook to instantaneously transform ESM & TypeScript to Common
 - Cached for performance boost
 - Supports Node.js v12.16.2+
 - Handles `node:` import prefixes
+- Resolves `tsconfig.json` [`paths`](https://www.typescriptlang.org/tsconfig#paths)
 
 > **Tip:**
 >

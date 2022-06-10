@@ -5,12 +5,14 @@ import {
 	installSourceMapSupport,
 	resolveTsPath,
 } from '@esbuild-kit/core-utils';
-import getTsconfig from 'get-tsconfig';
+import { getTsconfig, createPathsMatcher } from 'get-tsconfig';
 
+const isPathPattern = /^\.{0,2}\//;
 const isTsFilePatten = /\.[cm]?tsx?$/;
 
 const tsconfig = getTsconfig();
 const tsconfigRaw = tsconfig?.config;
+const tsconfigPathsMatcher = tsconfig && createPathsMatcher(tsconfig);
 
 const sourcemaps = installSourceMapSupport();
 
@@ -74,6 +76,25 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 	// https://nodejs.org/api/esm.html#esm_node_imports
 	if (request.startsWith('node:')) {
 		request = request.slice(5);
+	}
+
+	if (
+		tsconfigPathsMatcher
+		// bare specifier
+		&& !isPathPattern.test(request)
+	) {
+		const possiblePaths = tsconfigPathsMatcher(request);
+		for (const possiblePath of possiblePaths) {
+			try {
+				return resolveFilename.call(
+					this,
+					possiblePath,
+					parent,
+					isMain,
+					options,
+				);
+			} catch {}
+		}
 	}
 
 	/**
