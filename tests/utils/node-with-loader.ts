@@ -6,6 +6,7 @@ type Options = {
 	args: string[];
 	nodePath: string;
 	cwd?: string;
+	nodeOptions?: string[];
 };
 
 export const nodeWithLoader = async (
@@ -18,6 +19,8 @@ export const nodeWithLoader = async (
 			ESBK_DISABLE_CACHE: '1',
 		},
 		nodeOptions: [
+			...(options.nodeOptions ?? []),
+
 			'--require',
 			path.resolve(__dirname, '../..'),
 		],
@@ -39,6 +42,7 @@ export async function createNode(
 			filePath: string,
 			options?: {
 				cwd?: string;
+				nodeOptions?: string[];
 			},
 		) {
 			return nodeWithLoader(
@@ -46,6 +50,7 @@ export async function createNode(
 					args: [filePath],
 					nodePath: node.path,
 					cwd: path.join(fixturePath, options?.cwd ?? ''),
+					nodeOptions: options?.nodeOptions,
 				},
 			);
 		},
