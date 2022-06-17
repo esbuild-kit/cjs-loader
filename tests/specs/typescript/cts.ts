@@ -1,7 +1,7 @@
 import { testSuite, expect } from 'manten';
 import semver from 'semver';
 import type { NodeApis } from '../../utils/node-with-loader';
-import { nodeSupportsImport } from '../../utils/node-supports-import';
+import nodeSupports from '../../utils/node-supports';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('.cts extension', ({ describe }) => {
@@ -18,7 +18,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			test('Import', async () => {
 				const nodeProcess = await node.import(importPath);
 
-				if (semver.satisfies(node.version, nodeSupportsImport)) {
+				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Unknown file extension');
 				} else {
 					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
@@ -42,7 +42,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			test('Import', async () => {
 				const nodeProcess = await node.import(importPath, { mode: 'typescript' });
 
-				if (semver.satisfies(node.version, nodeSupportsImport)) {
+				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Cannot find module');
 				} else {
 					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
@@ -85,7 +85,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			test('Import', async () => {
 				const nodeProcess = await node.import(importPath);
 
-				if (semver.satisfies(node.version, nodeSupportsImport)) {
+				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Directory import');
 				} else {
 					expect(nodeProcess.stderr).toMatch('Cannot find module');
