@@ -4,6 +4,8 @@ import {
 	transformSync,
 	installSourceMapSupport,
 	resolveTsPath,
+	transformDynamicImport,
+	applySourceMap,
 } from '@esbuild-kit/core-utils';
 import { getTsconfig, createPathsMatcher } from 'get-tsconfig';
 
@@ -15,6 +17,18 @@ const tsconfigRaw = tsconfig?.config;
 const tsconfigPathsMatcher = tsconfig && createPathsMatcher(tsconfig);
 
 const sourcemaps = installSourceMapSupport();
+
+const nodeVersion = process.versions.node.split('.').map(Number);
+const nodeSupportsImport = (
+	// v13.2.0 and higher
+	(nodeVersion[0] >= 13 && nodeVersion[1] >= 2)
+
+	// 12.20.0 ~ 13.0.0
+	|| (
+		(nodeVersion[0] >= 12 && nodeVersion[1] >= 20)
+		&& (nodeVersion[0] < 13 && nodeVersion[1] < 0)
+	)
+);
 
 function transformer(
 	module: Module,
@@ -30,17 +44,25 @@ function transformer(
 		});
 	}
 
-	const code = fs.readFileSync(filePath, 'utf8');
-	const transformed = transformSync(code, filePath, {
-		format: 'cjs',
-		tsconfigRaw,
-	});
+	let code = fs.readFileSync(filePath, 'utf8');
 
-	if (transformed.map) {
-		sourcemaps!.set(filePath, transformed.map);
+	if (filePath.endsWith('.cjs') && nodeSupportsImport) {
+		const transformed = transformDynamicImport(code);
+		if (transformed) {
+			code = applySourceMap(transformed, filePath, sourcemaps);
+		}
+	} else {
+		code = transformSync(
+			code,
+			filePath,
+			{
+				tsconfigRaw,
+			},
+			sourcemaps,
+		);
 	}
 
-	module._compile(transformed.code, filePath);
+	module._compile(code, filePath);
 }
 
 const extensions = Module._extensions;
