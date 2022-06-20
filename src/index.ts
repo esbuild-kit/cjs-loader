@@ -45,10 +45,12 @@ function transformer(
 
 const extensions = Module._extensions;
 
-// https://github.com/nodejs/node/blob/v12.16.0/lib/internal/modules/cjs/loader.js#L1166
-// Implicit extensions
+/**
+ * Loaders for implicitly resolvable extensions
+ * https://github.com/nodejs/node/blob/v12.16.0/lib/internal/modules/cjs/loader.js#L1166
+ */
 [
-	'.js',
+	'.js', // (Handles .cjs, .cts, .mts & any explicitly specified extension that doesn't match any loaders)
 	'.ts',
 	'.tsx',
 	'.jsx',
@@ -56,17 +58,24 @@ const extensions = Module._extensions;
 	extensions[extension] = transformer;
 });
 
-// Explicit extensions
-[
-	'.cjs',
-	'.mjs',
-	'.cts',
-	'.mts',
-].forEach((extension) => {
-	Object.defineProperty(extensions, extension, {
-		value: transformer,
-		enumerable: false,
-	});
+/**
+ * Loaders for explicitly resolvable extensions
+ * (basically just .mjs because CJS loader has a special handler for it)
+ *
+ * Loaders for extensions .cjs, .cts, & .mts don't need to be
+ * registered because they're explicitly specified and unknown
+ * extensions (incl .cjs) fallsback to using the '.js' loader:
+ * https://github.com/nodejs/node/blob/v18.4.0/lib/internal/modules/cjs/loader.js#L430
+ *
+ * That said, it's actually ".js" and ".mjs" that get special treatment
+ * rather than ".cjs" (it might as well be ".random-ext")
+ */
+Object.defineProperty(extensions, '.mjs', {
+	value: transformer,
+
+	// Prevent Object.keys from detecting these extensions
+	// when CJS loader iterates over the possible extensions
+	enumerable: false,
 });
 
 // Add support for "node:" protocol
