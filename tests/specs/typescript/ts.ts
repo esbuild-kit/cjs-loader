@@ -125,7 +125,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				const nodeProcess = await node.import(importPath);
 
 				if (semver.satisfies(node.version, nodeSupports.import)) {
-					expect(nodeProcess.stderr).toMatch(/Directory import|Cannot find module/);
+					expect(nodeProcess.stderr).toMatch('Directory import');
 				} else {
 					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
 				}
