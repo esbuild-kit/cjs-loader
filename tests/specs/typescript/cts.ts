@@ -16,7 +16,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				expect(nodeProcess.stdout).toBe(output);
 			});
 
-			test('Import', async () => {
+			test('Import dynamic', async () => {
 				const nodeProcess = await node.importDynamic(importPath);
 
 				if (semver.satisfies(node.version, nodeSupports.import)) {
@@ -26,7 +26,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				}
 			});
 
-			describe('Static import', ({ test }) => {
+			describe('Import static', ({ test }) => {
 				test('from .js', async () => {
 					const nodeProcess = await node.importStatic(importPath);
 					expect(nodeProcess.stdout).toBe(outputExport);
