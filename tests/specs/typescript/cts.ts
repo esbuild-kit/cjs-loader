@@ -6,6 +6,7 @@ import nodeSupports from '../../utils/node-supports';
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('.cts extension', ({ describe }) => {
 		const output = 'loaded ts-ext-cts/index.cts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true,"import.meta.url":false}';
+		const outputExport = `${output}\n{"default":1234}`;
 
 		describe('full path', ({ test }) => {
 			const importPath = './lib/ts-ext-cts/index.cts';
@@ -21,13 +22,30 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Unknown file extension');
 				} else {
-					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+					expect(nodeProcess.stdout).toBe(outputExport);
 				}
+			});
+
+			describe('Static import', ({ test }) => {
+				test('from .js', async () => {
+					const nodeProcess = await node.importStatic(importPath);
+					expect(nodeProcess.stdout).toBe(outputExport);
+				});
+
+				test('from .ts', async () => {
+					const nodeProcess = await node.importStatic(importPath, { extension: 'ts' });
+					expect(nodeProcess.stdout).toBe(outputExport);
+				});
+
+				test('from .mts', async () => {
+					const nodeProcess = await node.importStatic(importPath, { extension: 'mts' });
+					expect(nodeProcess.stdout).toBe(outputExport);
+				});
 			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath);
-				expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+				expect(nodeProcess.stdout).toBe(outputExport);
 			});
 		});
 
