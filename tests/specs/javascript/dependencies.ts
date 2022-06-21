@@ -7,7 +7,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			const output = '{"default":"default export","namedExport":"named export"}';
 
 			test('Import', async () => {
-				const nodeProcess = await node.import('package-module');
+				const nodeProcess = await node.importDynamic('package-module');
 				expect(nodeProcess.stdout).toBe(output);
 			});
 

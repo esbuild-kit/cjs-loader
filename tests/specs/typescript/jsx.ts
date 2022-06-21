@@ -16,7 +16,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 
 			test('Import', async () => {
-				const nodeProcess = await node.import(importPath);
+				const nodeProcess = await node.importDynamic(importPath);
 
 				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Unknown file extension');
@@ -40,7 +40,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 
 			test('Import', async () => {
-				const nodeProcess = await node.import(importPath);
+				const nodeProcess = await node.importDynamic(importPath);
 
 				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Cannot find module');
@@ -64,7 +64,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 
 			test('Import', async () => {
-				const nodeProcess = await node.import(importPath);
+				const nodeProcess = await node.importDynamic(importPath);
 
 				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Directory import');

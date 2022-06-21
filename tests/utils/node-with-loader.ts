@@ -1,3 +1,4 @@
+import fs from 'fs/promises';
 import path from 'path';
 import { execaNode } from 'execa';
 import getNode from 'get-node';
@@ -30,6 +31,7 @@ export const nodeWithLoader = async (
 	},
 );
 
+let id = 0;
 export async function createNode(
 	nodeVersion: string,
 	fixturePath: string,
@@ -54,7 +56,7 @@ export async function createNode(
 				},
 			);
 		},
-		import(
+		importDynamic(
 			filePath: string,
 			options?: {
 				mode?: 'commonjs' | 'typescript';
@@ -77,6 +79,35 @@ export async function createNode(
 				nodePath: node.path,
 				cwd: fixturePath,
 			});
+		},
+		async importStatic(
+			filePath: string,
+			options?: {
+				extension?: string;
+			},
+		) {
+			id += 1;
+			const importerFileName = `static-import-file.${id}.${options?.extension || 'js'}`;
+			const importerFilePath = path.join(fixturePath, importerFileName);
+			await fs.writeFile(
+				importerFilePath,
+				`
+				import * as value from '${filePath}';
+				console.log(JSON.stringify(value));
+				`,
+			);
+
+			const nodeProcess = await nodeWithLoader({
+				args: [
+					importerFileName,
+				],
+				nodePath: node.path,
+				cwd: fixturePath,
+			});
+
+			await fs.rm(importerFilePath);
+
+			return nodeProcess;
 		},
 		require(
 			filePath: string,
