@@ -52,14 +52,15 @@ function transformer(
 			code = applySourceMap(transformed, filePath, sourcemaps);
 		}
 	} else {
-		code = transformSync(
+		const transformed = transformSync(
 			code,
 			filePath,
 			{
 				tsconfigRaw,
 			},
-			sourcemaps,
 		);
+
+		code = applySourceMap(transformed, filePath, sourcemaps);
 	}
 
 	module._compile(code, filePath);
