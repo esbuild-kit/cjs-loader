@@ -56,7 +56,7 @@ export async function createNode(
 				},
 			);
 		},
-		import(
+		importDynamic(
 			filePath: string,
 			options?: {
 				mode?: 'commonjs' | 'typescript';
