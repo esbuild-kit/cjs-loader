@@ -10,7 +10,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			expect(nodeProcess.stdout).toBe('div null hello world\nnull null goodbye world');
 		});
 
-		describe('paths', ({ test }) => {
+		describe('paths', ({ test, describe }) => {
 			test('resolves baseUrl', async () => {
 				const nodeProcess = await node.load('./src/base-url.ts', {
 					cwd: './tsconfig',
@@ -37,6 +37,15 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 					cwd: './tsconfig',
 				});
 				expect(nodeProcess.stdout).toBe('resolved');
+			});
+
+			describe('dependency', ({ test }) => {
+				test('resolve current directory', async () => {
+					const nodeProcess = await node.load('./dependency-resolve-current-directory', {
+						cwd: './tsconfig',
+					});
+					expect(nodeProcess.stdout).toBe('resolved');
+				});
 			});
 		});
 	});
