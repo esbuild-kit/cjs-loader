@@ -46,6 +46,13 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 					});
 					expect(nodeProcess.stdout).toBe('resolved');
 				});
+
+				test('should not resolve baseUrl', async () => {
+					const nodeProcess = await node.load('./dependency-should-not-resolve-baseUrl', {
+						cwd: './tsconfig',
+					});
+					expect(nodeProcess.stdout).toBe('resolved');
+				});
 			});
 		});
 	});

@@ -1,1 +1,1 @@
-import 'resolve-current-directory';
+require('resolve-current-directory');
