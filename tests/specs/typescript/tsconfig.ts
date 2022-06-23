@@ -53,6 +53,13 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 					});
 					expect(nodeProcess.stdout).toBe('resolved');
 				});
+
+				test('should not resolve paths', async () => {
+					const nodeProcess = await node.load('./dependency-should-not-resolve-paths', {
+						cwd: './tsconfig',
+					});
+					expect(nodeProcess.stdout).toBe('resolved');
+				});
 			});
 		});
 	});
