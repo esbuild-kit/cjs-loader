@@ -112,8 +112,12 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 
 	if (
 		tsconfigPathsMatcher
+
 		// bare specifier
 		&& !isPathPattern.test(request)
+
+		// Dependency paths should not be resolved using tsconfig.json
+		&& !parent.filename.includes('/node_modules/')
 	) {
 		const possiblePaths = tsconfigPathsMatcher(request);
 		for (const possiblePath of possiblePaths) {
