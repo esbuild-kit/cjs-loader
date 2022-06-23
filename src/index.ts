@@ -1,3 +1,4 @@
+import path from 'path';
 import fs from 'fs';
 import Module from 'module';
 import {
@@ -11,6 +12,7 @@ import { getTsconfig, createPathsMatcher } from 'get-tsconfig';
 
 const isPathPattern = /^\.{0,2}\//;
 const isTsFilePatten = /\.[cm]?tsx?$/;
+const nodeModulesPath = path.sep + 'node_modules' + path.sep;
 
 const tsconfig = getTsconfig();
 const tsconfigRaw = tsconfig?.config;
@@ -117,7 +119,7 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 		&& !isPathPattern.test(request)
 
 		// Dependency paths should not be resolved using tsconfig.json
-		&& !parent.filename.includes('/node_modules/')
+		&& !parent.filename.includes(nodeModulesPath)
 	) {
 		const possiblePaths = tsconfigPathsMatcher(request);
 		for (const possiblePath of possiblePaths) {
