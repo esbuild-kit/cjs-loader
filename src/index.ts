@@ -12,7 +12,7 @@ import { getTsconfig, createPathsMatcher } from 'get-tsconfig';
 
 const isPathPattern = /^\.{0,2}\//;
 const isTsFilePatten = /\.[cm]?tsx?$/;
-const nodeModulesPath = path.sep + 'node_modules' + path.sep;
+const nodeModulesPath = `${path.sep}node_modules${path.sep}`;
 
 const tsconfig = getTsconfig();
 const tsconfigRaw = tsconfig?.config;
