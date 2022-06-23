@@ -9,11 +9,11 @@ import specTsconfig from './tsconfig';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('TypeScript', async ({ runTestSuite }) => {
-		// runTestSuite(specTs, node);
-		// runTestSuite(specTsx, node);
-		// runTestSuite(specJsx, node);
-		// runTestSuite(specMts, node);
-		// runTestSuite(specCts, node);
+		runTestSuite(specTs, node);
+		runTestSuite(specTsx, node);
+		runTestSuite(specJsx, node);
+		runTestSuite(specMts, node);
+		runTestSuite(specCts, node);
 		runTestSuite(specTsconfig, node);
 	});
 });
