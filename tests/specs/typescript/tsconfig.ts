@@ -51,6 +51,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 					const nodeProcess = await node.load('./dependency-should-not-resolve-baseUrl', {
 						cwd: './tsconfig',
 					});
+					console.log(nodeProcess);
 					expect(nodeProcess.stdout).toBe('resolved');
 				});
 
