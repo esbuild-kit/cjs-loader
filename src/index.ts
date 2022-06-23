@@ -123,9 +123,15 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 	) {
 		console.log({
 			request,
-			parent: parent.filename,
+			parent,
+			isMain,
+			options,
+		});
+
+		console.log({
+			parent: parent?.filename,
 			nodeModulesPath,
-			isDependency: parent.filename.includes(nodeModulesPath),
+			isDependency: parent?.filename.includes(nodeModulesPath),
 		});
 		const possiblePaths = tsconfigPathsMatcher(request);
 		for (const possiblePath of possiblePaths) {
