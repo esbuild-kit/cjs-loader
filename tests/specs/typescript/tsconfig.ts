@@ -14,7 +14,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			const nodeProcess = await node.load('./src/tsx.tsx', {
 				cwd: './tsconfig',
 				env: {
-					TSCONFIG_PATH: './tsconfig-custom/tsconfig.custom-name.json',
+					ESBK_TSCONFIG_PATH: './tsconfig-custom/tsconfig.custom-name.json',
 				},
 			});
 			expect(nodeProcess.stdout).toBe('');
