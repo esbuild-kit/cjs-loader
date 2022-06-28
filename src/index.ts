@@ -8,17 +8,24 @@ import {
 	transformDynamicImport,
 	applySourceMap,
 } from '@esbuild-kit/core-utils';
-import { getTsconfig, createPathsMatcher } from 'get-tsconfig';
+import {
+	getTsconfig,
+	parseTsconfig,
+	createPathsMatcher,
+} from 'get-tsconfig';
 
 const isPathPattern = /^\.{0,2}\//;
 const isTsFilePatten = /\.[cm]?tsx?$/;
 const nodeModulesPath = `${path.sep}node_modules${path.sep}`;
 
-const parsedTsconfigPath =	process.env.ESBK_TSCONFIG_PATH
-	? path.parse(process.env.ESBK_TSCONFIG_PATH)
-	: undefined;
-
-const tsconfig = getTsconfig(parsedTsconfigPath?.dir, parsedTsconfigPath?.base);
+const tsconfig = (
+	process.env.ESBK_TSCONFIG_PATH
+		? {
+			path: process.env.ESBK_TSCONFIG_PATH,
+			config: parseTsconfig(process.env.ESBK_TSCONFIG_PATH),
+		}
+		: getTsconfig()
+);
 
 const tsconfigRaw = tsconfig?.config;
 const tsconfigPathsMatcher = tsconfig && createPathsMatcher(tsconfig);

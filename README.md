@@ -35,7 +35,7 @@ The following properties are used from `tsconfig.json` in the working directory:
 - `jsxFragmentFactory`
 
 #### Custom `tsconfig.json` path
-By default, `tsconfig.json` in the current working directory will be detected.
+By default, `tsconfig.json` will be detected from the current working directory.
 
 To set a custom path, use the `ESBK_TSCONFIG_PATH` environment variable:
 
