@@ -36,7 +36,7 @@
 		"get-tsconfig": "^4.1.0"
 	},
 	"devDependencies": {
-		"@pvtnbr/eslint-config": "^0.26.1",
+		"@pvtnbr/eslint-config": "^0.26.2",
 		"@types/node": "^18.0.0",
 		"@types/semver": "^7.3.10",
 		"eslint": "^8.18.0",
@@ -54,16 +54,7 @@
 			"tests/fixtures"
 		],
 		"rules": {
-			"import/no-unresolved": "off",
-			"@typescript-eslint/no-shadow": [
-				"error",
-				{
-					"allow": [
-						"test",
-						"describe"
-					]
-				}
-			]
+			"import/no-unresolved": "off"
 		}
 	}
 }

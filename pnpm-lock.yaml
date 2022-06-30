@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@esbuild-kit/core-utils': ^2.0.2
-  '@pvtnbr/eslint-config': ^0.26.1
+  '@pvtnbr/eslint-config': ^0.26.2
   '@types/node': ^18.0.0
   '@types/semver': ^7.3.10
   eslint: ^8.18.0
@@ -20,7 +20,7 @@ dependencies:
   get-tsconfig: 4.1.0
 
 devDependencies:
-  '@pvtnbr/eslint-config': 0.26.1_b5e7v2qnwxfo6hmiq56u52mz3e
+  '@pvtnbr/eslint-config': 0.26.2_b5e7v2qnwxfo6hmiq56u52mz3e
   '@types/node': 18.0.0
   '@types/semver': 7.3.10
   eslint: 8.18.0
@@ -157,8 +157,8 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /@pvtnbr/eslint-config/0.26.1_b5e7v2qnwxfo6hmiq56u52mz3e:
-    resolution: {integrity: sha512-/I4nsAcwibzI4bW5JPhiP/K2ju7dyKggafA7CtdgwMEX9qntswmkAPpZl6MsLN1ruWQg2Fv0dWONm0hdNZntSw==}
+  /@pvtnbr/eslint-config/0.26.2_b5e7v2qnwxfo6hmiq56u52mz3e:
+    resolution: {integrity: sha512-VdTcALE4s7aZr/HGhxLFj8f3p7pJZq9/PQ1f0jnBwh5PQUgI9n0c4p0Clkuir4Z4UATcYh0QDc45TqGsH5THBQ==}
     peerDependencies:
       eslint: ^7.15.0 || ^8.0.0
     dependencies:
