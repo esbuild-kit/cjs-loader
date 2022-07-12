@@ -5,14 +5,27 @@ import nodeSupports from '../../utils/node-supports';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('.ts extension', ({ describe }) => {
-		const output = 'loaded ts-ext-ts/index.ts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true,"import.meta.url":true}';
+		function assertResults(stdout: string, loadedMessage = 'loaded ts-ext-ts/index.ts\n') {
+			expect(stdout).toMatch(loadedMessage);
+			expect(stdout).toMatch('✔ has CJS context');
+			expect(stdout).toMatch('✔ import.meta.url');
+			expect(stdout).toMatch('✔ name in error');
+			expect(stdout).toMatch('✔ sourcemaps');
+			expect(stdout).toMatch('✔ has dynamic import');
+			expect(stdout).toMatch('✔ resolves optional node prefix');
+			expect(stdout).toMatch(
+				semver.satisfies(node.version, nodeSupports.testRunner)
+					? '✔ resolves required node prefix'
+					: '✖ resolves required node prefix: Error',
+			);
+		}
 
 		describe('full path', ({ test }) => {
 			const importPath = './lib/ts-ext-ts/index.ts';
 
 			test('Load', async () => {
 				const nodeProcess = await node.load(importPath);
-				expect(nodeProcess.stdout).toBe(output);
+				assertResults(nodeProcess.stdout);
 			});
 
 			if (semver.satisfies(node.version, nodeSupports.sourceMap)) {
@@ -20,7 +33,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 					const nodeProcess = await node.load(importPath, {
 						nodeOptions: ['-r', 'source-map-support/register'],
 					});
-					expect(nodeProcess.stdout).toBe(output);
+					assertResults(nodeProcess.stdout);
 				});
 			}
 
@@ -30,13 +43,15 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Unknown file extension');
 				} else {
-					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+					assertResults(nodeProcess.stdout);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				}
 			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath);
-				expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+				assertResults(nodeProcess.stdout);
+				expect(nodeProcess.stdout).toMatch('{"default":1234}');
 			});
 		});
 
@@ -54,13 +69,15 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Cannot find module');
 				} else {
-					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+					assertResults(nodeProcess.stdout);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				}
 			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath, { typescript: true });
-				expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+				assertResults(nodeProcess.stdout);
+				expect(nodeProcess.stdout).toMatch('{"default":1234}');
 			});
 		});
 
@@ -69,7 +86,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 			test('Load', async () => {
 				const nodeProcess = await node.load(importPath);
-				expect(nodeProcess.stdout).toBe(output);
+				assertResults(nodeProcess.stdout);
 			});
 
 			test('Import', async () => {
@@ -78,23 +95,24 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Cannot find module');
 				} else {
-					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+					assertResults(nodeProcess.stdout);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				}
 			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath);
-				expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+				assertResults(nodeProcess.stdout);
+				expect(nodeProcess.stdout).toMatch('{"default":1234}');
 			});
 		});
 
 		describe('extensionless with subextension', ({ test }) => {
 			const importPath = './lib/ts-ext-ts/index.tsx';
-			const outputSubextension = 'loaded ts-ext-ts/index.tsx.ts {"nodePrefix":true,"hasDynamicImport":true,"nameInError":true,"sourceMap":true,"import.meta.url":true}';
 
 			test('Load', async () => {
 				const nodeProcess = await node.load(importPath);
-				expect(nodeProcess.stdout).toBe(outputSubextension);
+				assertResults(nodeProcess.stdout, 'loaded ts-ext-ts/index.tsx.ts\n');
 			});
 
 			test('Import', async () => {
@@ -103,13 +121,15 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Cannot find module');
 				} else {
-					expect(nodeProcess.stdout).toBe(`${outputSubextension}\n{"default":1234}`);
+					assertResults(nodeProcess.stdout, 'loaded ts-ext-ts/index.tsx.ts\n');
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				}
 			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath);
-				expect(nodeProcess.stdout).toBe(`${outputSubextension}\n{"default":1234}`);
+				assertResults(nodeProcess.stdout, 'loaded ts-ext-ts/index.tsx.ts\n');
+				expect(nodeProcess.stdout).toMatch('{"default":1234}');
 			});
 		});
 
@@ -118,7 +138,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 			test('Load', async () => {
 				const nodeProcess = await node.load(importPath);
-				expect(nodeProcess.stdout).toBe(output);
+				assertResults(nodeProcess.stdout);
 			});
 
 			test('Import', async () => {
@@ -127,13 +147,15 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				if (semver.satisfies(node.version, nodeSupports.import)) {
 					expect(nodeProcess.stderr).toMatch('Directory import');
 				} else {
-					expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+					assertResults(nodeProcess.stdout);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				}
 			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath);
-				expect(nodeProcess.stdout).toBe(`${output}\n{"default":1234}`);
+				assertResults(nodeProcess.stdout);
+				expect(nodeProcess.stdout).toMatch('{"default":1234}');
 			});
 		});
 	});
