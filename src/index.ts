@@ -32,15 +32,23 @@ const tsconfigPathsMatcher = tsconfig && createPathsMatcher(tsconfig);
 
 const sourcemaps = installSourceMapSupport();
 
-const nodeVersion = process.versions.node.split('.').map(Number);
+type Version = [number, number, number];
+const nodeVersion = process.versions.node.split('.').map(Number) as Version;
+
+const compareNodeVersion = (version: Version) => (
+	nodeVersion[0] - version[0]
+	|| nodeVersion[1] - version[1]
+	|| nodeVersion[2] - version[2]
+);
+
 const nodeSupportsImport = (
 	// v13.2.0 and higher
-	(nodeVersion[0] >= 13 && nodeVersion[1] >= 2)
+	compareNodeVersion([13, 2, 0]) >= 0
 
 	// 12.20.0 ~ 13.0.0
 	|| (
-		(nodeVersion[0] >= 12 && nodeVersion[1] >= 20)
-		&& (nodeVersion[0] < 13 && nodeVersion[1] < 0)
+		compareNodeVersion([12, 20, 0]) >= 0
+		&& compareNodeVersion([13, 0, 0]) < 0
 	)
 );
 
@@ -115,12 +123,17 @@ Object.defineProperty(extensions, '.mjs', {
 	enumerable: false,
 });
 
+const supportsNodePrefix = (
+	compareNodeVersion([16, 0, 0]) >= 0
+	|| compareNodeVersion([14, 18, 0]) >= 0
+);
+
 // Add support for "node:" protocol
 const resolveFilename = Module._resolveFilename;
 Module._resolveFilename = function (request, parent, isMain, options) {
 	// Added in v12.20.0
 	// https://nodejs.org/api/esm.html#esm_node_imports
-	if (request.startsWith('node:')) {
+	if (!supportsNodePrefix && request.startsWith('node:')) {
 		request = request.slice(5);
 	}
 
