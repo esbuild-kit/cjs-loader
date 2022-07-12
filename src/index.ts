@@ -7,6 +7,7 @@ import {
 	resolveTsPath,
 	transformDynamicImport,
 	applySourceMap,
+	compareNodeVersion,
 } from '@esbuild-kit/core-utils';
 import {
 	getTsconfig,
@@ -31,15 +32,6 @@ const tsconfigRaw = tsconfig?.config;
 const tsconfigPathsMatcher = tsconfig && createPathsMatcher(tsconfig);
 
 const sourcemaps = installSourceMapSupport();
-
-type Version = [number, number, number];
-const nodeVersion = process.versions.node.split('.').map(Number) as Version;
-
-const compareNodeVersion = (version: Version) => (
-	nodeVersion[0] - version[0]
-	|| nodeVersion[1] - version[1]
-	|| nodeVersion[2] - version[2]
-);
 
 const nodeSupportsImport = (
 	// v13.2.0 and higher
