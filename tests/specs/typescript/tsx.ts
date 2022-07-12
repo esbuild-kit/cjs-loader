@@ -35,14 +35,14 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 					expect(nodeProcess.stderr).toMatch('Unknown file extension');
 				} else {
 					assertResults(nodeProcess.stdout);
-					expect(nodeProcess.stdout).toMatch(`{"default":["div",null,"hello world"]}`);
+					expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
 				}
 			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath);
 				assertResults(nodeProcess.stdout);
-				expect(nodeProcess.stdout).toMatch(`{"default":["div",null,"hello world"]}`);
+				expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
 			});
 		});
 
@@ -61,14 +61,14 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 					expect(nodeProcess.stderr).toMatch('Cannot find module');
 				} else {
 					assertResults(nodeProcess.stdout);
-					expect(nodeProcess.stdout).toMatch(`{"default":["div",null,"hello world"]}`);
+					expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
 				}
 			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath);
 				assertResults(nodeProcess.stdout);
-				expect(nodeProcess.stdout).toMatch(`{"default":["div",null,"hello world"]}`);
+				expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
 			});
 		});
 
@@ -87,14 +87,14 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 					expect(nodeProcess.stderr).toMatch('Directory import');
 				} else {
 					assertResults(nodeProcess.stdout);
-					expect(nodeProcess.stdout).toMatch(`{"default":["div",null,"hello world"]}`);
+					expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
 				}
 			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath);
 				assertResults(nodeProcess.stdout);
-				expect(nodeProcess.stdout).toMatch(`{"default":["div",null,"hello world"]}`);
+				expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
 			});
 		});
 	});

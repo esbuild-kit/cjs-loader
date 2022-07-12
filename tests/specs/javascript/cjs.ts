@@ -170,7 +170,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				test('Load', async () => {
 					const nodeProcess = await node.load(importPath);
 					assertResults(nodeProcess.stdout);
-			});
+				});
 
 				test('Import', async () => {
 					const nodeProcess = await node.importDynamic(importPath);

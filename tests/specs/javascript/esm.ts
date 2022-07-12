@@ -38,19 +38,19 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				test('Import', async () => {
 					const nodeProcess = await node.importDynamic(importPath);
 					assertResults(nodeProcess.stdout, !nodeSupportsEsm);
-					expect(nodeProcess.stdout).toMatch(`{"default":1234}`);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				});
 
 				test('TypeScript Import', async () => {
 					const nodeProcess = await node.importDynamic(importPath, { mode: 'typescript' });
 					assertResults(nodeProcess.stdout, !nodeSupportsEsm);
-					expect(nodeProcess.stdout).toMatch(`{"default":1234}`);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				});
 
 				test('Require', async () => {
 					const nodeProcess = await node.require(importPath);
 					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch(`{"default":1234}`);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				});
 			});
 
@@ -128,19 +128,19 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				test('Import', async () => {
 					const nodeProcess = await node.importDynamic(importPath);
 					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch(`{"default":1234}`);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				});
 
 				test('CommonJS Import', async () => {
 					const nodeProcess = await node.importDynamic(importPath, { mode: 'commonjs' });
 					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch(`{"default":1234}`);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				});
 
 				test('Require', async () => {
 					const nodeProcess = await node.require(importPath);
 					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch(`{"default":1234}`);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				});
 			});
 
@@ -159,14 +159,14 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 						expect(nodeProcess.stderr).toMatch('Cannot find module');
 					} else {
 						assertResults(nodeProcess.stdout, true);
-						expect(nodeProcess.stdout).toMatch(`{"default":1234}`);
+						expect(nodeProcess.stdout).toMatch('{"default":1234}');
 					}
 				});
 
 				test('Require', async () => {
 					const nodeProcess = await node.require(importPath);
 					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch(`{"default":1234}`);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				});
 			});
 
@@ -185,14 +185,14 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 						expect(nodeProcess.stderr).toMatch('Directory import');
 					} else {
 						assertResults(nodeProcess.stdout, true);
-						expect(nodeProcess.stdout).toMatch(`{"default":1234}`);
-						}
+						expect(nodeProcess.stdout).toMatch('{"default":1234}');
+					}
 				});
 
 				test('Require', async () => {
 					const nodeProcess = await node.require(importPath);
 					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch(`{"default":1234}`);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				});
 			});
 		});
