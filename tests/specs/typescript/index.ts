@@ -6,6 +6,7 @@ import specJsx from './jsx';
 import specMts from './mts';
 import specCts from './cts';
 import specTsconfig from './tsconfig';
+import specDependencies from './dependencies';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('TypeScript', async ({ runTestSuite }) => {
@@ -15,5 +16,6 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 		runTestSuite(specMts, node);
 		runTestSuite(specCts, node);
 		runTestSuite(specTsconfig, node);
+		runTestSuite(specDependencies, node);
 	});
 });
