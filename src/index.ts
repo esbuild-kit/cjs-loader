@@ -168,7 +168,11 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 					options,
 				);
 			} catch (error) {
-				if ((error as any).code !== 'MODULE_NOT_FOUND') {
+				const { code } = error as any;
+				if (
+					code !== 'MODULE_NOT_FOUND'
+					&& code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED'
+				) {
 					throw error;
 				}
 			}
