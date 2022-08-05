@@ -139,7 +139,13 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 		&& !parent?.filename.includes(nodeModulesPath)
 	) {
 		const possiblePaths = tsconfigPathsMatcher(request);
+
 		for (const possiblePath of possiblePaths) {
+			const tsFilename = resolveTsFilename.call(this, possiblePath, parent, isMain, options);
+			if (tsFilename) {
+				return tsFilename;
+			}
+
 			try {
 				return resolveFilename.call(
 					this,
@@ -152,32 +158,43 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 		}
 	}
 
-	/**
-	 * Typescript gives .ts, .cts, or .mts priority over actual .js, .cjs, or .mjs extensions
-	 */
-	if (parent && isTsFilePatten.test(parent.filename)) {
-		const tsPath = resolveTsPath(request);
-
-		if (tsPath) {
-			try {
-				return resolveFilename.call(
-					this,
-					tsPath,
-					parent,
-					isMain,
-					options,
-				);
-			} catch (error) {
-				const { code } = error as any;
-				if (
-					code !== 'MODULE_NOT_FOUND'
-					&& code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED'
-				) {
-					throw error;
-				}
-			}
-		}
+	const tsFilename = resolveTsFilename.call(this, request, parent, isMain, options);
+	if (tsFilename) {
+		return tsFilename;
 	}
 
 	return resolveFilename.call(this, request, parent, isMain, options);
 };
+
+/**
+ * Typescript gives .ts, .cts, or .mts priority over actual .js, .cjs, or .mjs extensions
+ */
+function resolveTsFilename(
+	this:ThisType<typeof resolveFilename>,
+	request: string,
+	parent: any,
+	isMain: boolean,
+	options?: any,
+) {
+	const tsPath = resolveTsPath(request);
+
+	if (parent && isTsFilePatten.test(parent.filename) && tsPath) {
+		try {
+			return resolveFilename.call(
+				this,
+				tsPath,
+				parent,
+				isMain,
+				options,
+			);
+		} catch (error) {
+			const { code } = error as any;
+			if (
+				code !== 'MODULE_NOT_FOUND'
+				&& code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED'
+			) {
+				throw error;
+			}
+		}
+	}
+}
