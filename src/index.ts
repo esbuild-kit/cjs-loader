@@ -170,7 +170,7 @@ Module._resolveFilename = function (request, parent, isMain, options) {
  * Typescript gives .ts, .cts, or .mts priority over actual .js, .cjs, or .mjs extensions
  */
 function resolveTsFilename(
-	this:ThisType<typeof resolveFilename>,
+	this: ThisType<typeof resolveFilename>,
 	request: string,
 	parent: any,
 	isMain: boolean,
