@@ -52,6 +52,11 @@ test(
 	() => import('fs').then(Boolean),
 );
 
+test(
+	'preserves names',
+	() => (function functionName() {}).name === 'functionName',
+);
+
 const React = {
 	createElement: (...args) => Array.from(args),
 };

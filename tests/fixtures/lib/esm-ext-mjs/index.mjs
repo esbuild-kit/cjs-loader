@@ -52,4 +52,9 @@ test(
 	() => import('node:test').then(Boolean),
 );
 
+test(
+	'preserves names',
+	() => (function functionName() {}).name === 'functionName',
+);
+
 export default 1234;
