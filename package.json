@@ -29,8 +29,7 @@
 		"build": "pkgroll --target node12.20 --minify",
 		"lint": "eslint .",
 		"type-check": "tsc --noEmit",
-		"pretest": "npm run build",
-		"test": "node --require ./dist/index.js tests/index.ts"
+		"test": "pnpm build && node --require ./dist/index.js tests/index.ts"
 	},
 	"dependencies": {
 		"@esbuild-kit/core-utils": "^2.3.1",

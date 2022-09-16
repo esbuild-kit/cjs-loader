@@ -22,12 +22,18 @@ jobs:
       with:
         node-version-file: '.nvmrc'
 
-    - name: Install dependencies
-      run: npx ci
-
-    - name: Test
-      run: npm run test
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2.2.2
+      with:
+        version: 7
+        run_install: true
 
     - name: Lint
       if: ${{ matrix.os == 'ubuntu-latest' }}
-      run: npm run lint
+      run: pnpm lint
+
+    - name: Type check
+      run: pnpm type-check
+
+    - name: Test
+      run: pnpm test
