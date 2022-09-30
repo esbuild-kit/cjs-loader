@@ -61,7 +61,7 @@ function transformer(
 	let code = fs.readFileSync(filePath, 'utf8');
 
 	if (filePath.endsWith('.cjs') && nodeSupportsImport) {
-		const transformed = transformDynamicImport(code);
+		const transformed = transformDynamicImport(filePath, code);
 		if (transformed) {
 			code = applySourceMap(transformed, filePath, sourcemaps);
 		}
