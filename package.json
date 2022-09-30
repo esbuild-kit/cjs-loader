@@ -53,9 +53,6 @@
 		"extends": "@pvtnbr",
 		"ignorePatterns": [
 			"tests/fixtures"
-		],
-		"rules": {
-			"import/no-unresolved": "off"
-		}
+		]
 	}
 }
