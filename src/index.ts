@@ -14,6 +14,7 @@ import {
 	parseTsconfig,
 	createPathsMatcher,
 } from 'get-tsconfig';
+import type { TransformOptions } from 'esbuild';
 
 const isPathPattern = /^\.{0,2}\//;
 const isTsFilePatten = /\.[cm]?tsx?$/;
@@ -70,7 +71,7 @@ function transformer(
 			code,
 			filePath,
 			{
-				tsconfigRaw,
+				tsconfigRaw: tsconfigRaw as TransformOptions['tsconfigRaw'],
 			},
 		);
 
