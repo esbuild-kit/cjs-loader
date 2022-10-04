@@ -179,7 +179,7 @@ function resolveTsFilename(
 ) {
 	const tsPath = resolveTsPath(request);
 
-	if (parent && isTsFilePatten.test(parent.filename) && tsPath) {
+	if (parent && tsPath) {
 		try {
 			return resolveFilename.call(
 				this,
