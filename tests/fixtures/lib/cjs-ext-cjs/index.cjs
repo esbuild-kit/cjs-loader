@@ -40,8 +40,13 @@ test(
 		console.log({
 			stack,
 			__filename,
+			slashed: __filename.replace(/\\/g, '/'),
 		});
-		return stack.includes(__filename + ':39:');
+		const position = ':39:';
+		return (
+			stack.includes(__filename + position)
+			|| stack.includes(__filename.replace(/\\/g, '/').toLowerCase() + position)
+		);
 	},
 );
 
