@@ -44,7 +44,8 @@ test(
 		});
 		return (
 			stack.includes(__filename + ':39:')
-			|| stack.includes(__filename.replace(/\\/g, '/').toLowerCase() + ':39:')
+			|| stack.includes(__filename.toLowerCase() + ':39:')
+			|| stack.includes(__filename.toLowerCase().replace(/\\/g, '/') + ':39:')
 		);
 	},
 );
