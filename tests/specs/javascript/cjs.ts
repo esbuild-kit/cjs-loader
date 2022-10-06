@@ -5,29 +5,29 @@ import nodeSupports from '../../utils/node-supports';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('Load CJS', ({ describe }) => {
-		// describe('.cjs extension', ({ describe }) => {
-		// 	function assertResults(stdout: string) {
-		// 		expect(stdout).toMatch('loaded cjs-ext-cjs/index.cjs');
-		// 		expect(stdout).toMatch('✔ has CJS context');
-		// 		expect(stdout).toMatch('✔ name in error');
-		// 		expect(stdout).toMatch('✔ sourcemaps');
-		// 		expect(stdout).toMatch('✔ has dynamic import');
-		// 		expect(stdout).toMatch('✔ resolves optional node prefix');
-		// 		expect(stdout).toMatch('✔ preserves names');
-		// 		expect(stdout).toMatch(
-		// 			semver.satisfies(node.version, nodeSupports.testRunner)
-		// 				? '✔ resolves required node prefix'
-		// 				: '✖ resolves required node prefix: Error',
-		// 		);
-		// 	}
+		describe('.cjs extension', ({ describe }) => {
+			function assertResults(stdout: string) {
+				expect(stdout).toMatch('loaded cjs-ext-cjs/index.cjs');
+				expect(stdout).toMatch('✔ has CJS context');
+				expect(stdout).toMatch('✔ name in error');
+				expect(stdout).toMatch('✔ sourcemaps');
+				expect(stdout).toMatch('✔ has dynamic import');
+				expect(stdout).toMatch('✔ resolves optional node prefix');
+				expect(stdout).toMatch('✔ preserves names');
+				expect(stdout).toMatch(
+					semver.satisfies(node.version, nodeSupports.testRunner)
+						? '✔ resolves required node prefix'
+						: '✖ resolves required node prefix: Error',
+				);
+			}
 
-		// 	describe('full path', ({ test }) => {
-		// 		const importPath = './lib/cjs-ext-cjs/index.cjs';
+			describe('full path', ({ test }) => {
+				const importPath = './lib/cjs-ext-cjs/index.cjs';
 
-		// 		test('Load', async () => {
-		// 			const nodeProcess = await node.load(importPath);
-		// 			assertResults(nodeProcess.stdout);
-		// 		});
+				test('Load', async () => {
+					const nodeProcess = await node.load(importPath);
+					assertResults(nodeProcess.stdout);
+				});
 
 		// 		test('Import', async () => {
 		// 			const nodeProcess = await node.importDynamic(importPath);
@@ -46,7 +46,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 		// 			assertResults(nodeProcess.stdout);
 		// 			expect(nodeProcess.stdout).toMatch('1234');
 		// 		});
-		// 	});
+			});
 
 		// 	describe('extensionless - shoud not work', ({ test }) => {
 		// 		const importPath = './lib/cjs-ext-cjs/index';
@@ -90,7 +90,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 		// 			expect(nodeProcess.stderr).toMatch('Cannot find module');
 		// 		});
 		// 	});
-		// });
+		});
 
 		describe('.js extension', ({ describe }) => {
 			function assertResults(stdout: string) {
@@ -113,7 +113,6 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 				test('Load', async () => {
 					const nodeProcess = await node.load(importPath);
-					console.log(nodeProcess);
 					assertResults(nodeProcess.stdout);
 				});
 
