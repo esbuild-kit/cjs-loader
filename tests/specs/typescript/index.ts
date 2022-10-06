@@ -10,12 +10,12 @@ import specDependencies from './dependencies';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('TypeScript', async ({ runTestSuite }) => {
-		// runTestSuite(specTs, node);
-		// runTestSuite(specTsx, node);
-		// runTestSuite(specJsx, node);
+		runTestSuite(specTs, node);
+		runTestSuite(specTsx, node);
+		runTestSuite(specJsx, node);
 		runTestSuite(specMts, node);
-		// runTestSuite(specCts, node);
-		// runTestSuite(specTsconfig, node);
-		// runTestSuite(specDependencies, node);
+		runTestSuite(specCts, node);
+		runTestSuite(specTsconfig, node);
+		runTestSuite(specDependencies, node);
 	});
 });
