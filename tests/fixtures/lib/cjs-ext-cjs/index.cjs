@@ -37,11 +37,6 @@ test(
 	'sourcemaps',
 	() => {
 		const { stack } = new Error();
-		console.log({
-			stack,
-			__filename,
-			slashed: __filename.replace(/\\/g, '/'),
-		});
 		const position = ':39:';
 		return (
 			stack.includes(__filename + position)
