@@ -26,11 +26,11 @@ const nodeVersions = [
 				(require('./specs/javascript') as typeof import('./specs/javascript')).default,
 				node,
 			);
-			// runTestSuite(
-			// 	// eslint-disable-next-line node/global-require,@typescript-eslint/no-var-requires
-			// 	(require('./specs/typescript') as typeof import('./specs/typescript')).default,
-			// 	node,
-			// );
+			runTestSuite(
+				// eslint-disable-next-line node/global-require,@typescript-eslint/no-var-requires
+				(require('./specs/typescript') as typeof import('./specs/typescript')).default,
+				node,
+			);
 		});
 	}
 })();
