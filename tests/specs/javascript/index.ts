@@ -7,7 +7,7 @@ import specDependencies from './dependencies';
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('JavaScript', ({ runTestSuite }) => {
 		runTestSuite(specCjs, node);
-		runTestSuite(specEsm, node);
-		runTestSuite(specDependencies, node);
+		// runTestSuite(specEsm, node);
+		// runTestSuite(specDependencies, node);
 	});
 });
