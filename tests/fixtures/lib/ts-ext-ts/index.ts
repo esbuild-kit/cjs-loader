@@ -1,45 +1,41 @@
 async function test(description: string, testFunction: () => any | Promise<any>) {
 	try {
-	   const result = await testFunction();
-	   if (!result) { throw result; }
-	   console.log(`✔ ${description}`);
-   } catch (error) {
-	   console.log(`✖ ${description}: ${error.toString().split('\n').shift()}`);
-   }
+		const result = await testFunction();
+		if (!result) { throw result; }
+		console.log(`✔ ${description}`);
+	} catch (error) {
+		console.log(`✖ ${description}: ${error.toString().split('\n').shift()}`);
+	}
 }
 
 console.log('loaded ts-ext-ts/index.ts');
 
 test(
-   'has CJS context',
-   () => typeof require !== 'undefined' || typeof module !== 'undefined',
+	'has CJS context',
+	() => typeof require !== 'undefined' || typeof module !== 'undefined',
 );
 
 test(
-   'import.meta.url',
-   () => Boolean(import.meta.url),
+	'import.meta.url',
+	() => Boolean(import.meta.url),
 );
 
 test(
-   'name in error',
-   () => {
-	   let nameInError;
-	   try {
-		   nameInError();
-	   } catch (error) {
-		   return error.message.includes('nameInError');
-	   }
-   },
+	'name in error',
+	() => {
+		let nameInError;
+		try {
+			nameInError();
+		} catch (error) {
+			return error.message.includes('nameInError');
+		}
+	},
 );
 
 test(
-   'sourcemaps',
-   () => {
+	'sourcemaps',
+	() => {
 		const { stack } = new Error();
-      console.log({
-         stack,
-         __filename,
-      });
 		return (
 			stack!.includes(__filename + ':38:')
 			|| stack!.includes(__filename.toLowerCase() + ':38:')
@@ -48,18 +44,18 @@ test(
 );
 
 test(
-   'has dynamic import',
-   () => import('fs').then(Boolean),
+	'has dynamic import',
+	() => import('fs').then(Boolean),
 );
 
 test(
-   'resolves optional node prefix',
-   () => import('node:fs').then(Boolean),
+	'resolves optional node prefix',
+	() => import('node:fs').then(Boolean),
 );
 
 test(
-   'resolves required node prefix',
-   () => import('node:test').then(Boolean),
+	'resolves required node prefix',
+	() => import('node:test').then(Boolean),
 );
 
 test(
