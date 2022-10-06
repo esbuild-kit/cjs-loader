@@ -33,6 +33,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 				test('Load', async () => {
 					const nodeProcess = await node.load(importPath);
+					console.log(nodeProcess.stdout);
 					assertResults(nodeProcess.stdout, !nodeSupportsEsm);
 				});
 
@@ -123,6 +124,7 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 				test('Load', async () => {
 					const nodeProcess = await node.load(importPath);
+					console.log(nodeProcess.stdout);
 					assertResults(nodeProcess.stdout, true);
 				});
 
