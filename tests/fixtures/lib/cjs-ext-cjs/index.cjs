@@ -37,10 +37,9 @@ test(
 	'sourcemaps',
 	() => {
 		const { stack } = new Error();
-		const position = ':39:';
 		return (
-			stack.includes(__filename + position)
-			|| stack.includes(__filename.replace(/\\/g, '/').toLowerCase() + position)
+			stack.includes(__filename + ':39:')
+			|| stack.includes(__filename.replace(/\\/g, '/').toLowerCase() + ':39:')
 		);
 	},
 );

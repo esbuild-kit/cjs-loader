@@ -36,7 +36,10 @@ test(
 	'sourcemaps',
 	() => {
 		const { stack } = new Error();
-		return stack!.includes(__filename + ':38:');
+		return (
+			stack!.includes(__filename + ':38:')
+			|| stack!.includes(__filename.replace(/\\/g, '/').toLowerCase() + ':38:')
+		);
 	},
 );
 
