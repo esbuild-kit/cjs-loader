@@ -29,135 +29,135 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				assertResults(nodeProcess.stdout);
 			});
 
-			if (semver.satisfies(node.version, nodeSupports.sourceMap)) {
-				test('Disables native source map if Error.prepareStackTrace is customized', async () => {
-					const nodeProcess = await node.load(importPath, {
-						nodeOptions: ['-r', 'source-map-support/register'],
-					});
-					assertResults(nodeProcess.stdout);
-				});
-			}
+			// if (semver.satisfies(node.version, nodeSupports.sourceMap)) {
+			// 	test('Disables native source map if Error.prepareStackTrace is customized', async () => {
+			// 		const nodeProcess = await node.load(importPath, {
+			// 			nodeOptions: ['-r', 'source-map-support/register'],
+			// 		});
+			// 		assertResults(nodeProcess.stdout);
+			// 	});
+			// }
 
-			test('Import', async () => {
-				const nodeProcess = await node.importDynamic(importPath);
+			// test('Import', async () => {
+			// 	const nodeProcess = await node.importDynamic(importPath);
 
-				if (semver.satisfies(node.version, nodeSupports.import)) {
-					expect(nodeProcess.stderr).toMatch('Unknown file extension');
-				} else {
-					assertResults(nodeProcess.stdout);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				}
-			});
+			// 	if (semver.satisfies(node.version, nodeSupports.import)) {
+			// 		expect(nodeProcess.stderr).toMatch('Unknown file extension');
+			// 	} else {
+			// 		assertResults(nodeProcess.stdout);
+			// 		expect(nodeProcess.stdout).toMatch('{"default":1234}');
+			// 	}
+			// });
 
-			test('Require', async () => {
-				const nodeProcess = await node.require(importPath);
-				assertResults(nodeProcess.stdout);
-				expect(nodeProcess.stdout).toMatch('{"default":1234}');
-			});
+			// test('Require', async () => {
+			// 	const nodeProcess = await node.require(importPath);
+			// 	assertResults(nodeProcess.stdout);
+			// 	expect(nodeProcess.stdout).toMatch('{"default":1234}');
+			// });
 		});
 
-		describe('full path via .js', ({ test }) => {
-			const importPath = './lib/ts-ext-ts/index.js';
+		// describe('full path via .js', ({ test }) => {
+		// 	const importPath = './lib/ts-ext-ts/index.js';
 
-			test('Load - should not work', async () => {
-				const nodeProcess = await node.load(importPath);
-				expect(nodeProcess.stderr).toMatch('Cannot find module');
-			});
+		// 	test('Load - should not work', async () => {
+		// 		const nodeProcess = await node.load(importPath);
+		// 		expect(nodeProcess.stderr).toMatch('Cannot find module');
+		// 	});
 
-			test('Import', async () => {
-				const nodeProcess = await node.importDynamic(importPath, { mode: 'typescript' });
+		// 	test('Import', async () => {
+		// 		const nodeProcess = await node.importDynamic(importPath, { mode: 'typescript' });
 
-				if (semver.satisfies(node.version, nodeSupports.import)) {
-					expect(nodeProcess.stderr).toMatch('Cannot find module');
-				} else {
-					assertResults(nodeProcess.stdout);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				}
-			});
+		// 		if (semver.satisfies(node.version, nodeSupports.import)) {
+		// 			expect(nodeProcess.stderr).toMatch('Cannot find module');
+		// 		} else {
+		// 			assertResults(nodeProcess.stdout);
+		// 			expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 		}
+		// 	});
 
-			test('Require', async () => {
-				const nodeProcess = await node.require(importPath, { typescript: true });
-				assertResults(nodeProcess.stdout);
-				expect(nodeProcess.stdout).toMatch('{"default":1234}');
-			});
-		});
+		// 	test('Require', async () => {
+		// 		const nodeProcess = await node.require(importPath, { typescript: true });
+		// 		assertResults(nodeProcess.stdout);
+		// 		expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 	});
+		// });
 
-		describe('extensionless', ({ test }) => {
-			const importPath = './lib/ts-ext-ts/index';
+		// describe('extensionless', ({ test }) => {
+		// 	const importPath = './lib/ts-ext-ts/index';
 
-			test('Load', async () => {
-				const nodeProcess = await node.load(importPath);
-				assertResults(nodeProcess.stdout);
-			});
+		// 	test('Load', async () => {
+		// 		const nodeProcess = await node.load(importPath);
+		// 		assertResults(nodeProcess.stdout);
+		// 	});
 
-			test('Import', async () => {
-				const nodeProcess = await node.importDynamic(importPath);
+		// 	test('Import', async () => {
+		// 		const nodeProcess = await node.importDynamic(importPath);
 
-				if (semver.satisfies(node.version, nodeSupports.import)) {
-					expect(nodeProcess.stderr).toMatch('Cannot find module');
-				} else {
-					assertResults(nodeProcess.stdout);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				}
-			});
+		// 		if (semver.satisfies(node.version, nodeSupports.import)) {
+		// 			expect(nodeProcess.stderr).toMatch('Cannot find module');
+		// 		} else {
+		// 			assertResults(nodeProcess.stdout);
+		// 			expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 		}
+		// 	});
 
-			test('Require', async () => {
-				const nodeProcess = await node.require(importPath);
-				assertResults(nodeProcess.stdout);
-				expect(nodeProcess.stdout).toMatch('{"default":1234}');
-			});
-		});
+		// 	test('Require', async () => {
+		// 		const nodeProcess = await node.require(importPath);
+		// 		assertResults(nodeProcess.stdout);
+		// 		expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 	});
+		// });
 
-		describe('extensionless with subextension', ({ test }) => {
-			const importPath = './lib/ts-ext-ts/index.tsx';
+		// describe('extensionless with subextension', ({ test }) => {
+		// 	const importPath = './lib/ts-ext-ts/index.tsx';
 
-			test('Load', async () => {
-				const nodeProcess = await node.load(importPath);
-				assertResults(nodeProcess.stdout, 'loaded ts-ext-ts/index.tsx.ts\n');
-			});
+		// 	test('Load', async () => {
+		// 		const nodeProcess = await node.load(importPath);
+		// 		assertResults(nodeProcess.stdout, 'loaded ts-ext-ts/index.tsx.ts\n');
+		// 	});
 
-			test('Import', async () => {
-				const nodeProcess = await node.importDynamic(importPath);
+		// 	test('Import', async () => {
+		// 		const nodeProcess = await node.importDynamic(importPath);
 
-				if (semver.satisfies(node.version, nodeSupports.import)) {
-					expect(nodeProcess.stderr).toMatch('Cannot find module');
-				} else {
-					assertResults(nodeProcess.stdout, 'loaded ts-ext-ts/index.tsx.ts\n');
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				}
-			});
+		// 		if (semver.satisfies(node.version, nodeSupports.import)) {
+		// 			expect(nodeProcess.stderr).toMatch('Cannot find module');
+		// 		} else {
+		// 			assertResults(nodeProcess.stdout, 'loaded ts-ext-ts/index.tsx.ts\n');
+		// 			expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 		}
+		// 	});
 
-			test('Require', async () => {
-				const nodeProcess = await node.require(importPath);
-				assertResults(nodeProcess.stdout, 'loaded ts-ext-ts/index.tsx.ts\n');
-				expect(nodeProcess.stdout).toMatch('{"default":1234}');
-			});
-		});
+		// 	test('Require', async () => {
+		// 		const nodeProcess = await node.require(importPath);
+		// 		assertResults(nodeProcess.stdout, 'loaded ts-ext-ts/index.tsx.ts\n');
+		// 		expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 	});
+		// });
 
-		describe('directory', ({ test }) => {
-			const importPath = './lib/ts-ext-ts';
+		// describe('directory', ({ test }) => {
+		// 	const importPath = './lib/ts-ext-ts';
 
-			test('Load', async () => {
-				const nodeProcess = await node.load(importPath);
-				assertResults(nodeProcess.stdout);
-			});
+		// 	test('Load', async () => {
+		// 		const nodeProcess = await node.load(importPath);
+		// 		assertResults(nodeProcess.stdout);
+		// 	});
 
-			test('Import', async () => {
-				const nodeProcess = await node.importDynamic(importPath);
+		// 	test('Import', async () => {
+		// 		const nodeProcess = await node.importDynamic(importPath);
 
-				if (semver.satisfies(node.version, nodeSupports.import)) {
-					expect(nodeProcess.stderr).toMatch('Directory import');
-				} else {
-					assertResults(nodeProcess.stdout);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				}
-			});
+		// 		if (semver.satisfies(node.version, nodeSupports.import)) {
+		// 			expect(nodeProcess.stderr).toMatch('Directory import');
+		// 		} else {
+		// 			assertResults(nodeProcess.stdout);
+		// 			expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 		}
+		// 	});
 
-			test('Require', async () => {
-				const nodeProcess = await node.require(importPath);
-				assertResults(nodeProcess.stdout);
-				expect(nodeProcess.stdout).toMatch('{"default":1234}');
-			});
-		});
+		// 	test('Require', async () => {
+		// 		const nodeProcess = await node.require(importPath);
+		// 		assertResults(nodeProcess.stdout);
+		// 		expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 	});
+		// });
 	});
 });

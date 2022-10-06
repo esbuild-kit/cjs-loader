@@ -21,16 +21,16 @@ const nodeVersions = [
 		const node = await createNode(nodeVersion, './tests/fixtures');
 
 		await describe(`Node ${node.version}`, ({ runTestSuite }) => {
-			runTestSuite(
-				// eslint-disable-next-line node/global-require,@typescript-eslint/no-var-requires
-				(require('./specs/javascript') as typeof import('./specs/javascript')).default,
-				node,
-			);
 			// runTestSuite(
 			// 	// eslint-disable-next-line node/global-require,@typescript-eslint/no-var-requires
-			// 	(require('./specs/typescript') as typeof import('./specs/typescript')).default,
+			// 	(require('./specs/javascript') as typeof import('./specs/javascript')).default,
 			// 	node,
 			// );
+			runTestSuite(
+				// eslint-disable-next-line node/global-require,@typescript-eslint/no-var-requires
+				(require('./specs/typescript') as typeof import('./specs/typescript')).default,
+				node,
+			);
 		});
 	}
 })();
