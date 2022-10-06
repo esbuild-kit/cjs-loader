@@ -37,8 +37,8 @@ test(
 	() => {
 		const { stack } = new Error();
 		return (
-			stack!.includes(__filename + ':38:')
-			|| stack!.includes(__filename.toLowerCase() + ':38:')
+			stack!.includes(`${__filename}:38:`)
+			|| stack!.includes(`${__filename.toLowerCase()}:38:`)
 		);
 	},
 );
