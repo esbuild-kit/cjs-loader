@@ -34,7 +34,10 @@ test(
 
 test(
    'sourcemaps',
-   () => new Error().stack!.includes(':37:'),
+   () => {
+		const { stack } = new Error();
+		return stack!.includes(__filename + ':38:');
+	},
 );
 
 test(
