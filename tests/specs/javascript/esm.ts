@@ -31,171 +31,172 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			describe('full path', ({ test }) => {
 				const importPath = './lib/esm-ext-mjs/index.mjs';
 
-				test('Load', async () => {
-					const nodeProcess = await node.load(importPath);
-					assertResults(nodeProcess.stdout, !nodeSupportsEsm);
-				});
+				// test('Load', async () => {
+				// 	const nodeProcess = await node.load(importPath);
+				// 	assertResults(nodeProcess.stdout, !nodeSupportsEsm);
+				// });
 
-				test('Import', async () => {
-					const nodeProcess = await node.importDynamic(importPath);
-					assertResults(nodeProcess.stdout, !nodeSupportsEsm);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				});
+				// test('Import', async () => {
+				// 	const nodeProcess = await node.importDynamic(importPath);
+				// 	assertResults(nodeProcess.stdout, !nodeSupportsEsm);
+				// 	expect(nodeProcess.stdout).toMatch('{"default":1234}');
+				// });
 
-				test('TypeScript Import', async () => {
-					const nodeProcess = await node.importDynamic(importPath, { mode: 'typescript' });
-					assertResults(nodeProcess.stdout, !nodeSupportsEsm);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				});
+				// test('TypeScript Import', async () => {
+				// 	const nodeProcess = await node.importDynamic(importPath, { mode: 'typescript' });
+				// 	assertResults(nodeProcess.stdout, !nodeSupportsEsm);
+				// 	expect(nodeProcess.stdout).toMatch('{"default":1234}');
+				// });
 
 				test('Require', async () => {
 					const nodeProcess = await node.require(importPath);
+					console.log(nodeProcess.stdout);
 					assertResults(nodeProcess.stdout, true);
 					expect(nodeProcess.stdout).toMatch('{"default":1234}');
 				});
 			});
 
-			describe('extensionless - should not work', ({ test }) => {
-				const importPath = './lib/esm-ext-mjs/index';
+			// describe('extensionless - should not work', ({ test }) => {
+			// 	const importPath = './lib/esm-ext-mjs/index';
 
-				test('Load', async () => {
-					const nodeProcess = await node.load(importPath);
-					expect(nodeProcess.stderr).toMatch('Cannot find module');
-				});
+			// 	test('Load', async () => {
+			// 		const nodeProcess = await node.load(importPath);
+			// 		expect(nodeProcess.stderr).toMatch('Cannot find module');
+			// 	});
 
-				test('Import', async () => {
-					const nodeProcess = await node.importDynamic(importPath);
-					expect(nodeProcess.stderr).toMatch('Cannot find module');
-				});
+			// 	test('Import', async () => {
+			// 		const nodeProcess = await node.importDynamic(importPath);
+			// 		expect(nodeProcess.stderr).toMatch('Cannot find module');
+			// 	});
 
-				test('Require', async () => {
-					const nodeProcess = await node.require(importPath);
-					expect(nodeProcess.stderr).toMatch('Cannot find module');
-				});
-			});
+			// 	test('Require', async () => {
+			// 		const nodeProcess = await node.require(importPath);
+			// 		expect(nodeProcess.stderr).toMatch('Cannot find module');
+			// 	});
+			// });
 
-			describe('directory - should not work', ({ test }) => {
-				const importPath = './lib/esm-ext-mjs';
+			// describe('directory - should not work', ({ test }) => {
+			// 	const importPath = './lib/esm-ext-mjs';
 
-				test('Load', async () => {
-					const nodeProcess = await node.load(importPath);
-					expect(nodeProcess.stderr).toMatch('Cannot find module');
-				});
+			// 	test('Load', async () => {
+			// 		const nodeProcess = await node.load(importPath);
+			// 		expect(nodeProcess.stderr).toMatch('Cannot find module');
+			// 	});
 
-				test('Import', async () => {
-					const nodeProcess = await node.importDynamic(importPath);
+			// 	test('Import', async () => {
+			// 		const nodeProcess = await node.importDynamic(importPath);
 
-					if (semver.satisfies(node.version, nodeSupports.import)) {
-						expect(nodeProcess.stderr).toMatch('Directory import');
-					} else {
-						expect(nodeProcess.stderr).toMatch('Cannot find module');
-					}
-				});
+			// 		if (semver.satisfies(node.version, nodeSupports.import)) {
+			// 			expect(nodeProcess.stderr).toMatch('Directory import');
+			// 		} else {
+			// 			expect(nodeProcess.stderr).toMatch('Cannot find module');
+			// 		}
+			// 	});
 
-				test('Require', async () => {
-					const nodeProcess = await node.require(importPath);
-					expect(nodeProcess.stderr).toMatch('Cannot find module');
-				});
-			});
+			// 	test('Require', async () => {
+			// 		const nodeProcess = await node.require(importPath);
+			// 		expect(nodeProcess.stderr).toMatch('Cannot find module');
+			// 	});
+			// });
 		});
 
-		describe('.js extension', ({ describe }) => {
-			function assertResults(stdout: string, cjsContext: boolean) {
-				expect(stdout).toMatch('loaded esm-ext-js/index.js');
-				expect(stdout).toMatch(
-					cjsContext
-						? '✔ has CJS context'
-						: '✖ has CJS context',
-				);
-				expect(stdout).toMatch('✔ name in error');
-				expect(stdout).toMatch('✔ sourcemaps');
-				expect(stdout).toMatch('✔ has dynamic import');
-				expect(stdout).toMatch('✔ resolves optional node prefix');
-				expect(stdout).toMatch(
-					semver.satisfies(node.version, nodeSupports.testRunner)
-						? '✔ resolves required node prefix'
-						: '✖ resolves required node prefix: Error',
-				);
-			}
+		// describe('.js extension', ({ describe }) => {
+		// 	function assertResults(stdout: string, cjsContext: boolean) {
+		// 		expect(stdout).toMatch('loaded esm-ext-js/index.js');
+		// 		expect(stdout).toMatch(
+		// 			cjsContext
+		// 				? '✔ has CJS context'
+		// 				: '✖ has CJS context',
+		// 		);
+		// 		expect(stdout).toMatch('✔ name in error');
+		// 		expect(stdout).toMatch('✔ sourcemaps');
+		// 		expect(stdout).toMatch('✔ has dynamic import');
+		// 		expect(stdout).toMatch('✔ resolves optional node prefix');
+		// 		expect(stdout).toMatch(
+		// 			semver.satisfies(node.version, nodeSupports.testRunner)
+		// 				? '✔ resolves required node prefix'
+		// 				: '✖ resolves required node prefix: Error',
+		// 		);
+		// 	}
 
-			describe('full path', ({ test }) => {
-				const importPath = './lib/esm-ext-js/index.js';
+		// 	describe('full path', ({ test }) => {
+		// 		const importPath = './lib/esm-ext-js/index.js';
 
-				test('Load', async () => {
-					const nodeProcess = await node.load(importPath);
-					assertResults(nodeProcess.stdout, true);
-				});
+		// 		test('Load', async () => {
+		// 			const nodeProcess = await node.load(importPath);
+		// 			assertResults(nodeProcess.stdout, true);
+		// 		});
 
-				test('Import', async () => {
-					const nodeProcess = await node.importDynamic(importPath);
-					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				});
+		// 		test('Import', async () => {
+		// 			const nodeProcess = await node.importDynamic(importPath);
+		// 			assertResults(nodeProcess.stdout, true);
+		// 			expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 		});
 
-				test('CommonJS Import', async () => {
-					const nodeProcess = await node.importDynamic(importPath, { mode: 'commonjs' });
-					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				});
+		// 		test('CommonJS Import', async () => {
+		// 			const nodeProcess = await node.importDynamic(importPath, { mode: 'commonjs' });
+		// 			assertResults(nodeProcess.stdout, true);
+		// 			expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 		});
 
-				test('Require', async () => {
-					const nodeProcess = await node.require(importPath);
-					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				});
-			});
+		// 		test('Require', async () => {
+		// 			const nodeProcess = await node.require(importPath);
+		// 			assertResults(nodeProcess.stdout, true);
+		// 			expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 		});
+		// 	});
 
-			describe('extensionless', ({ test }) => {
-				const importPath = './lib/esm-ext-js/index';
+		// 	describe('extensionless', ({ test }) => {
+		// 		const importPath = './lib/esm-ext-js/index';
 
-				test('Load', async () => {
-					const nodeProcess = await node.load(importPath);
-					assertResults(nodeProcess.stdout, true);
-				});
+		// 		test('Load', async () => {
+		// 			const nodeProcess = await node.load(importPath);
+		// 			assertResults(nodeProcess.stdout, true);
+		// 		});
 
-				test('Import', async () => {
-					const nodeProcess = await node.importDynamic(importPath);
+		// 		test('Import', async () => {
+		// 			const nodeProcess = await node.importDynamic(importPath);
 
-					if (semver.satisfies(node.version, nodeSupports.import)) {
-						expect(nodeProcess.stderr).toMatch('Cannot find module');
-					} else {
-						assertResults(nodeProcess.stdout, true);
-						expect(nodeProcess.stdout).toMatch('{"default":1234}');
-					}
-				});
+		// 			if (semver.satisfies(node.version, nodeSupports.import)) {
+		// 				expect(nodeProcess.stderr).toMatch('Cannot find module');
+		// 			} else {
+		// 				assertResults(nodeProcess.stdout, true);
+		// 				expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 			}
+		// 		});
 
-				test('Require', async () => {
-					const nodeProcess = await node.require(importPath);
-					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				});
-			});
+		// 		test('Require', async () => {
+		// 			const nodeProcess = await node.require(importPath);
+		// 			assertResults(nodeProcess.stdout, true);
+		// 			expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 		});
+		// 	});
 
-			describe('directory', ({ test }) => {
-				const importPath = './lib/esm-ext-js';
+		// 	describe('directory', ({ test }) => {
+		// 		const importPath = './lib/esm-ext-js';
 
-				test('Load', async () => {
-					const nodeProcess = await node.load(importPath);
-					assertResults(nodeProcess.stdout, true);
-				});
+		// 		test('Load', async () => {
+		// 			const nodeProcess = await node.load(importPath);
+		// 			assertResults(nodeProcess.stdout, true);
+		// 		});
 
-				test('Import', async () => {
-					const nodeProcess = await node.importDynamic(importPath);
+		// 		test('Import', async () => {
+		// 			const nodeProcess = await node.importDynamic(importPath);
 
-					if (semver.satisfies(node.version, nodeSupports.import)) {
-						expect(nodeProcess.stderr).toMatch('Directory import');
-					} else {
-						assertResults(nodeProcess.stdout, true);
-						expect(nodeProcess.stdout).toMatch('{"default":1234}');
-					}
-				});
+		// 			if (semver.satisfies(node.version, nodeSupports.import)) {
+		// 				expect(nodeProcess.stderr).toMatch('Directory import');
+		// 			} else {
+		// 				assertResults(nodeProcess.stdout, true);
+		// 				expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 			}
+		// 		});
 
-				test('Require', async () => {
-					const nodeProcess = await node.require(importPath);
-					assertResults(nodeProcess.stdout, true);
-					expect(nodeProcess.stdout).toMatch('{"default":1234}');
-				});
-			});
-		});
+		// 		test('Require', async () => {
+		// 			const nodeProcess = await node.require(importPath);
+		// 			assertResults(nodeProcess.stdout, true);
+		// 			expect(nodeProcess.stdout).toMatch('{"default":1234}');
+		// 		});
+		// 	});
+		// });
 	});
 });
