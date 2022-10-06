@@ -29,16 +29,16 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				assertResults(nodeProcess.stdout);
 			});
 
-			// test('Import', async () => {
-			// 	const nodeProcess = await node.importDynamic(importPath);
+			test('Import', async () => {
+				const nodeProcess = await node.importDynamic(importPath);
 
-			// 	if (semver.satisfies(node.version, nodeSupports.import)) {
-			// 		expect(nodeProcess.stderr).toMatch('Unknown file extension');
-			// 	} else {
-			// 		assertResults(nodeProcess.stdout);
-			// 		expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
-			// 	}
-			// });
+				if (semver.satisfies(node.version, nodeSupports.import)) {
+					expect(nodeProcess.stderr).toMatch('Unknown file extension');
+				} else {
+					assertResults(nodeProcess.stdout);
+					expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
+				}
+			});
 
 			test('Require', async () => {
 				const nodeProcess = await node.require(importPath);
@@ -47,56 +47,56 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 		});
 
-		// describe('extensionless', ({ test }) => {
-		// 	const importPath = './lib/ts-ext-tsx/index';
+		describe('extensionless', ({ test }) => {
+			const importPath = './lib/ts-ext-tsx/index';
 
-		// 	test('Load', async () => {
-		// 		const nodeProcess = await node.load(importPath);
-		// 		assertResults(nodeProcess.stdout);
-		// 	});
+			test('Load', async () => {
+				const nodeProcess = await node.load(importPath);
+				assertResults(nodeProcess.stdout);
+			});
 
-		// 	test('Import', async () => {
-		// 		const nodeProcess = await node.importDynamic(importPath);
+			test('Import', async () => {
+				const nodeProcess = await node.importDynamic(importPath);
 
-		// 		if (semver.satisfies(node.version, nodeSupports.import)) {
-		// 			expect(nodeProcess.stderr).toMatch('Cannot find module');
-		// 		} else {
-		// 			assertResults(nodeProcess.stdout);
-		// 			expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
-		// 		}
-		// 	});
+				if (semver.satisfies(node.version, nodeSupports.import)) {
+					expect(nodeProcess.stderr).toMatch('Cannot find module');
+				} else {
+					assertResults(nodeProcess.stdout);
+					expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
+				}
+			});
 
-		// 	test('Require', async () => {
-		// 		const nodeProcess = await node.require(importPath);
-		// 		assertResults(nodeProcess.stdout);
-		// 		expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
-		// 	});
-		// });
+			test('Require', async () => {
+				const nodeProcess = await node.require(importPath);
+				assertResults(nodeProcess.stdout);
+				expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
+			});
+		});
 
-		// describe('directory', ({ test }) => {
-		// 	const importPath = './lib/ts-ext-tsx';
+		describe('directory', ({ test }) => {
+			const importPath = './lib/ts-ext-tsx';
 
-		// 	test('Load', async () => {
-		// 		const nodeProcess = await node.load(importPath);
-		// 		assertResults(nodeProcess.stdout);
-		// 	});
+			test('Load', async () => {
+				const nodeProcess = await node.load(importPath);
+				assertResults(nodeProcess.stdout);
+			});
 
-		// 	test('Import', async () => {
-		// 		const nodeProcess = await node.importDynamic(importPath);
+			test('Import', async () => {
+				const nodeProcess = await node.importDynamic(importPath);
 
-		// 		if (semver.satisfies(node.version, nodeSupports.import)) {
-		// 			expect(nodeProcess.stderr).toMatch('Directory import');
-		// 		} else {
-		// 			assertResults(nodeProcess.stdout);
-		// 			expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
-		// 		}
-		// 	});
+				if (semver.satisfies(node.version, nodeSupports.import)) {
+					expect(nodeProcess.stderr).toMatch('Directory import');
+				} else {
+					assertResults(nodeProcess.stdout);
+					expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
+				}
+			});
 
-		// 	test('Require', async () => {
-		// 		const nodeProcess = await node.require(importPath);
-		// 		assertResults(nodeProcess.stdout);
-		// 		expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
-		// 	});
-		// });
+			test('Require', async () => {
+				const nodeProcess = await node.require(importPath);
+				assertResults(nodeProcess.stdout);
+				expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
+			});
+		});
 	});
 });
