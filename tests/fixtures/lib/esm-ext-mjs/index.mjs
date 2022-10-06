@@ -37,10 +37,6 @@ test(
 	() => {
 		const { stack } = new Error();
 		const filePath = (typeof __filename === 'string') ? __filename : import.meta.url;
-		console.log({
-			stack,
-			filePath,
-		});
 		return (
 			stack.includes(filePath + ':38:')
 			|| stack.includes(filePath.toLowerCase() + ':38:')
