@@ -41,7 +41,10 @@ test(
 			stack,
 			filePath,
 		});
-		return stack.includes(filePath + ':38:');
+		return (
+			stack.includes(filePath + ':38:')
+			|| stack.includes(filePath.toLowerCase() + ':38:')
+		);
 	},
 );
 
