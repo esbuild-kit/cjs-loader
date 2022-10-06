@@ -124,8 +124,13 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 				test('Load', async () => {
 					const nodeProcess = await node.load(importPath);
-					console.log(nodeProcess.stdout);
-					assertResults(nodeProcess.stdout, true);
+
+					try {
+						assertResults(nodeProcess.stdout, true);						
+					} catch (error) {
+						console.log(nodeProcess.stdout);
+						throw error;
+					}
 				});
 
 				// test('Import', async () => {
