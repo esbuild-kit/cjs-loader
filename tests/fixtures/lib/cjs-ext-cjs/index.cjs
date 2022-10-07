@@ -39,7 +39,8 @@ test(
 		const { stack } = new Error();
 		return (
 			stack.includes(__filename + ':39:')
-			|| stack.includes(__filename.toLowerCase() + ':39:')
+			// TODO: Investigate why converting slashes is only needed for .cjs
+			|| stack.includes(__filename.toLowerCase().replace(/\\/g, '/') + ':39:')
 		);
 	},
 );
