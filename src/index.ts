@@ -6,7 +6,6 @@ import {
 	installSourceMapSupport,
 	resolveTsPath,
 	transformDynamicImport,
-	applySourceMap,
 	compareNodeVersion,
 } from '@esbuild-kit/core-utils';
 import {
@@ -32,7 +31,7 @@ const tsconfig = (
 const tsconfigRaw = tsconfig?.config;
 const tsconfigPathsMatcher = tsconfig && createPathsMatcher(tsconfig);
 
-const sourcemaps = installSourceMapSupport();
+const applySourceMap = installSourceMapSupport();
 
 const nodeSupportsImport = (
 	// v13.2.0 and higher
@@ -62,9 +61,9 @@ function transformer(
 	let code = fs.readFileSync(filePath, 'utf8');
 
 	if (filePath.endsWith('.cjs') && nodeSupportsImport) {
-		const transformed = transformDynamicImport(code);
+		const transformed = transformDynamicImport(filePath, code);
 		if (transformed) {
-			code = applySourceMap(transformed, filePath, sourcemaps);
+			code = applySourceMap(transformed, filePath);
 		}
 	} else {
 		const transformed = transformSync(
@@ -75,7 +74,7 @@ function transformer(
 			},
 		);
 
-		code = applySourceMap(transformed, filePath, sourcemaps);
+		code = applySourceMap(transformed, filePath);
 	}
 
 	module._compile(code, filePath);

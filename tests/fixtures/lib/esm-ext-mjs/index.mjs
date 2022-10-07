@@ -34,7 +34,14 @@ test(
 
 test(
 	'sourcemaps',
-	() => new Error().stack.includes(':37:'),
+	() => {
+		const { stack } = new Error();
+		const filePath = (typeof __filename === 'string') ? __filename : import.meta.url;
+		return (
+			stack.includes(filePath + ':38:')
+			|| stack.includes(filePath.toLowerCase() + ':38:')
+		);
+	},
 );
 
 test(

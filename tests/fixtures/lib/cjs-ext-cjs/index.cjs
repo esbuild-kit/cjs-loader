@@ -35,7 +35,14 @@ test(
 
 test(
 	'sourcemaps',
-	() => new Error().stack.includes(':38:'),
+	() => {
+		const { stack } = new Error();
+		return (
+			stack.includes(__filename + ':39:')
+			// TODO: Investigate why converting slashes is only needed for .cjs
+			|| stack.includes(__filename.toLowerCase().replace(/\\/g, '/') + ':39:')
+		);
+	},
 );
 
 test(
