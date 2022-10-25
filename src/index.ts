@@ -113,6 +113,8 @@ Object.defineProperty(extensions, '.mjs', {
 	// Prevent Object.keys from detecting these extensions
 	// when CJS loader iterates over the possible extensions
 	enumerable: false,
+	// Prevents breaking interoperability with ts-node, which may need to overwrite this.
+	writable: true
 });
 
 const supportsNodePrefix = (
