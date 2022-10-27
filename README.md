@@ -24,9 +24,9 @@ npm install --save-dev @esbuild-kit/cjs-loader
 
 ## Usage
 
-Pass `@esbuild/cjs-loader` into the [`--require`](https://nodejs.org/api/cli.html#-r---require-module) flag
+Pass `@esbuild-kit/cjs-loader` into the [`--require`](https://nodejs.org/api/cli.html#-r---require-module) flag
 ```sh
-node -r @esbuild/cjs-loader ./file.js
+node -r @esbuild-kit/cjs-loader ./file.js
 ```
 
 ### TypeScript configuration
@@ -40,7 +40,7 @@ By default, `tsconfig.json` will be detected from the current working directory.
 To set a custom path, use the `ESBK_TSCONFIG_PATH` environment variable:
 
 ```sh
-ESBK_TSCONFIG_PATH=./path/to/tsconfig.custom.json node -r @esbuild/cjs-loader ./file.js
+ESBK_TSCONFIG_PATH=./path/to/tsconfig.custom.json node -r @esbuild-kit/cjs-loader ./file.js
 ```
 
 ### Cache
@@ -49,7 +49,7 @@ Modules transformations are cached in the system cache directory ([`TMPDIR`](htt
 Set environment variable `ESBK_DISABLE_CACHE` to a truthy value to disable the cache:
 
 ```sh
-ESBK_DISABLE_CACHE=1 node -r @esbuild/cjs-loader ./file.js
+ESBK_DISABLE_CACHE=1 node -r @esbuild-kit/cjs-loader ./file.js
 ```
 
 ## Related
