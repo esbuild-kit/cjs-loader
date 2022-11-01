@@ -65,7 +65,12 @@ function transformer(
 		if (transformed) {
 			code = applySourceMap(transformed, filePath);
 		}
-	} else {
+	} else if (
+		// Best guesses for files that need to be transformed.
+		t.includes('{export ') ||
+		t.includes('{import ') ||
+		t.split('\n').some((line) => line.startsWith('import ') || line.startsWith('export '))
+	)
 		const transformed = transformSync(
 			code,
 			filePath,
