@@ -60,6 +60,8 @@ function transformer(
 
 	let code = fs.readFileSync(filePath, 'utf8');
 
+	const hasImportOrExport = /^\s*(?:import|export)/gm;
+
 	if (filePath.endsWith('.cjs') && nodeSupportsImport) {
 		const transformed = transformDynamicImport(filePath, code);
 		if (transformed) {
@@ -67,10 +69,12 @@ function transformer(
 		}
 	} else if (
 		// Best guesses for files that need to be transformed.
-		code.includes('{export ') ||
-		code.includes('{import ') ||
-		code.split('\n').some((line) => line.startsWith('import ') || line.startsWith('export '))
-	)
+		!filePath.endsWith('.js')
+		|| code.includes('{export ')
+		|| code.includes('{import ')
+		|| code.includes('import(')
+		|| hasImportOrExport.test(code)
+	) {
 		const transformed = transformSync(
 			code,
 			filePath,
@@ -80,6 +84,8 @@ function transformer(
 		);
 
 		code = applySourceMap(transformed, filePath);
+	} else {
+		// Skipped, we expect it not to need to be transformed.
 	}
 
 	module._compile(code, filePath);
