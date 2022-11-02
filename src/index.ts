@@ -108,13 +108,19 @@ const extensions = Module._extensions;
  * rather than ".cjs" (it might as well be ".random-ext")
  */
 Object.defineProperty(extensions, '.mjs', {
-	value: transformer,
+	get() {
+		return transformer;
+	},
 
 	// Prevent Object.keys from detecting these extensions
 	// when CJS loader iterates over the possible extensions
 	enumerable: false,
-	// Prevents breaking interoperability with ts-node, which may need to overwrite this.
-	writable: true
+	// Similar libraries like ts-node and esbuild-register may attempt override this as well.
+	// this empty setter is to prevent the error from being thrown:
+	// TypeError: Cannot assign to read only property '.mjs' of object '[object Object]'
+	set() {
+		// no-op
+	},
 });
 
 const supportsNodePrefix = (

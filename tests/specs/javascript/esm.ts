@@ -1,4 +1,5 @@
 import { testSuite, expect } from 'manten';
+import Module from 'module';
 import semver from 'semver';
 import type { NodeApis } from '../../utils/node-with-loader';
 import nodeSupports from '../../utils/node-supports';
@@ -30,6 +31,15 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 			describe('full path', ({ test }) => {
 				const importPath = './lib/esm-ext-mjs/index.mjs';
+
+				test('Does not throw error when overwritten', async () => {
+					const extensions = Module._extensions;
+					extensions['.mjs'] = () => {
+						throw new Error('Overwritten');
+					};
+					const nodeProcess = await node.load(importPath);
+					assertResults(nodeProcess.stdout, !nodeSupportsEsm);
+				});
 
 				test('Load', async () => {
 					const nodeProcess = await node.load(importPath);
