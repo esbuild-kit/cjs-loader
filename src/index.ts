@@ -60,7 +60,7 @@ function transformer(
 
 	let code = fs.readFileSync(filePath, 'utf8');
 
-	const hasImportOrExport = /^\s*(?:import|export)/gm;
+	const hasImportOrExport = /^\s*(?:import|export)\s/gm;
 
 	if (filePath.endsWith('.cjs') && nodeSupportsImport) {
 		const transformed = transformDynamicImport(filePath, code);
@@ -69,11 +69,9 @@ function transformer(
 		}
 	} else if (
 		// Best guesses for files that need to be transformed.
-		!filePath.endsWith('.js')
-		|| code.includes('{export ')
-		|| code.includes('{import ')
-		|| code.includes('import(')
-		|| hasImportOrExport.test(code)
+		!filePath.endsWith('.js') // not .js, so possibly ts, tsx, mjs, mts etc.
+		|| code.includes('import(') // dynamic import
+		|| hasImportOrExport.test(code) // any line starts with import or export
 	) {
 		const transformed = transformSync(
 			code,
