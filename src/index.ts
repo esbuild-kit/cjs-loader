@@ -136,7 +136,7 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 		&& !isPathPattern.test(request)
 
 		// Dependency paths should not be resolved using tsconfig.json
-		&& !parent?.filename.includes(nodeModulesPath)
+		&& !parent?.filename?.includes(nodeModulesPath)
 	) {
 		const possiblePaths = tsconfigPathsMatcher(request);
 

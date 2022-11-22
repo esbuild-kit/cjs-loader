@@ -26,14 +26,21 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				const nodeProcess = await node.load('./src/base-url.ts', {
 					cwd: './tsconfig',
 				});
-				expect(nodeProcess.stdout).toBe('resolve-target');
+				expect(nodeProcess.stdout).toBe('resolve-target loaded\nresolve-target value');
+			});
+
+			test('Require flag', async () => {
+				const nodeProcess = await node.requireFlag('resolve-target', {
+					cwd: './tsconfig',
+				});
+				expect(nodeProcess.stdout).toMatch('resolve-target loaded');
 			});
 
 			test('resolves paths exact match', async () => {
 				const nodeProcess = await node.load('./src/paths-exact-match.ts', {
 					cwd: './tsconfig',
 				});
-				expect(nodeProcess.stdout).toBe('resolve-target');
+				expect(nodeProcess.stdout).toBe('resolve-target loaded\nresolve-target value');
 			});
 
 			test('resolves paths prefix', async () => {
