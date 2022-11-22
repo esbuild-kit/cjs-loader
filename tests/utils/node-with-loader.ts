@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { execaNode } from 'execa';
+import { execaNode, execa } from 'execa';
 import getNode from 'get-node';
 
 type Options = {
@@ -10,6 +10,8 @@ type Options = {
 	env?: NodeJS.ProcessEnv;
 	nodeOptions?: string[];
 };
+
+const cjsLoaderPath = path.resolve(__dirname, '../..');
 
 export const nodeWithLoader = async (
 	options: Options,
@@ -25,7 +27,7 @@ export const nodeWithLoader = async (
 			...(options.nodeOptions ?? []),
 
 			'--require',
-			path.resolve(__dirname, '../..'),
+			cjsLoaderPath,
 		],
 		nodePath: options.nodePath,
 		cwd: options.cwd,
@@ -128,6 +130,30 @@ export async function createNode(
 				nodePath: node.path,
 				cwd: fixturePath,
 			});
+		},
+		requireFlag(
+			filePath: string,
+			options?: {
+				cwd?: string;
+			},
+		) {
+			return execa(
+				node.path,
+				[
+					'--require',
+					cjsLoaderPath,
+					'--require',
+					filePath,
+					'--eval',
+					'null',
+				],
+				{
+					cwd: path.join(fixturePath, options?.cwd ?? ''),
+					env: {
+						ESBK_DISABLE_CACHE: '1',
+					},
+				},
+			);
 		},
 	};
 }
