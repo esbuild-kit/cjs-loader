@@ -1,10 +1,10 @@
 async function test(description: string, testFunction: () => any | Promise<any>) {
 	try {
-	   const result = await testFunction();
-	   if (!result) { throw result; }
-	   console.log(`✔ ${description}`);
+		const result = await testFunction();
+		if (!result) { throw result; }
+		console.log(`✔ ${description}`);
 	} catch (error) {
-	   console.log(`✖ ${description}: ${error.toString().split('\n').shift()}`);
+		console.log(`✖ ${description}: ${error.toString().split('\n').shift()}`);
 	}
 }
 
@@ -23,12 +23,12 @@ test(
 test(
 	'name in error',
 	() => {
-	   let nameInError;
-	   try {
-		   nameInError();
-	   } catch (error) {
-		   return error.message.includes('nameInError');
-	   }
+		let nameInError;
+		try {
+			nameInError();
+		} catch (error) {
+			return error.message.includes('nameInError');
+		}
 	},
 );
 

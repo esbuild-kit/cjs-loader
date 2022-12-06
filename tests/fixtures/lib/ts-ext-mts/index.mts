@@ -1,5 +1,5 @@
 async function test(description: string, testFunction: () => any | Promise<any>) {
- 	try {
+	try {
 		const result = await testFunction();
 		if (!result) { throw result; }
 		console.log(`✔ ${description}`);
