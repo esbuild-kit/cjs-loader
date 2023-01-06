@@ -10,7 +10,7 @@ specifiers:
   eslint: ^8.24.0
   execa: ^6.1.0
   get-node: ^13.2.0
-  get-tsconfig: ^4.2.0
+  get-tsconfig: github:privatenumber/get-tsconfig#npm/file-matcher
   manten: ^0.3.0
   pkgroll: ^1.4.0
   semver: ^7.3.7
@@ -19,7 +19,7 @@ specifiers:
 
 dependencies:
   '@esbuild-kit/core-utils': 3.0.0
-  get-tsconfig: 4.2.0
+  get-tsconfig: github.com/privatenumber/get-tsconfig/76a834efa6b5e6ae13318bedc53122dfeddc8393
 
 devDependencies:
   '@pvtnbr/eslint-config': 0.30.1_ypn2ylkkyfa5i233caldtndbqa
@@ -2109,6 +2109,7 @@ packages:
 
   /get-tsconfig/4.2.0:
     resolution: {integrity: sha512-X8u8fREiYOE6S8hLbq99PeykTDoLVnxvF4DjWKJmz9xy2nNRdUcV8ZN9tniJFeKyTU3qnC9lL8n4Chd6LmVKHg==}
+    dev: true
 
   /glob-parent/5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
@@ -3862,3 +3863,9 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
+
+  github.com/privatenumber/get-tsconfig/76a834efa6b5e6ae13318bedc53122dfeddc8393:
+    resolution: {tarball: https://codeload.github.com/privatenumber/get-tsconfig/tar.gz/76a834efa6b5e6ae13318bedc53122dfeddc8393}
+    name: get-tsconfig
+    version: 0.0.0-semantic-release
+    dev: false
