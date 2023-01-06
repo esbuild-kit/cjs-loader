@@ -67,6 +67,9 @@ function transformer(
 			code = applySourceMap(transformed, filePath);
 		}
 	} else {
+		console.log({
+			filePath,
+		});
 		const transformed = transformSync(
 			code,
 			filePath,
