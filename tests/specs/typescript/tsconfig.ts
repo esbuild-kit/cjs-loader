@@ -10,6 +10,29 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			expect(nodeProcess.stdout).toBe('div null hello world\nnull null goodbye world');
 		});
 
+		describe('scope', ({ test }) => {
+			test('applies strict mode', async () => {
+				const nodeProcess = await node.load('./src/strict-mode.ts', {
+					cwd: './tsconfig',
+				});
+				expect(nodeProcess.stdout).toBe('strict mode');
+			});
+
+			test('doesnt apply strict mode', async () => {
+				const nodeProcess = await node.load('./src-excluded/strict-mode.ts', {
+					cwd: './tsconfig',
+				});
+				expect(nodeProcess.stdout).toBe('not strict mode');
+			});
+
+			test('doesnt apply strict mode js', async () => {
+				const nodeProcess = await node.load('./src/strict-mode-js.js', {
+					cwd: './tsconfig',
+				});
+				expect(nodeProcess.stdout).toBe('not strict mode');
+			});
+		});
+
 		test('Custom tsconfig.json path', async () => {
 			const nodeProcess = await node.load('./src/tsx.tsx', {
 				cwd: './tsconfig',
