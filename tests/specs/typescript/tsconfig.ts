@@ -31,6 +31,13 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				});
 				expect(nodeProcess.stdout).toBe('not strict mode');
 			});
+
+			test('jsxFactory & jsxFragmentFactory not applied', async () => {
+				const nodeProcess = await node.load('./src-excluded/tsx.tsx', {
+					cwd: './tsconfig',
+				});
+				expect(nodeProcess.stderr).toMatch('ReferenceError: React is not defined');
+			});
 		});
 
 		test('Custom tsconfig.json path', async () => {
