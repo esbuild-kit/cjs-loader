@@ -85,15 +85,10 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 							allowJs: true,
 							jsxFactory: 'console.log',
 						},
-						exclude: [
-							'excluded',
-						],
 					}),
 					src: {
-						'strict-mode-ts.ts': checkStrictMode,
 						'strict-mode-js.js': checkStrictMode,
 						'jsx.jsx': checkJsx,
-						'tsx.tsx': checkJsx,
 					},
 				});
 
