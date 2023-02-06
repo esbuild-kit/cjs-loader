@@ -12,6 +12,7 @@ import {
 	getTsconfig,
 	parseTsconfig,
 	createPathsMatcher,
+	createFilesMatcher,
 } from 'get-tsconfig';
 import type { TransformOptions } from 'esbuild';
 
@@ -22,13 +23,13 @@ const nodeModulesPath = `${path.sep}node_modules${path.sep}`;
 const tsconfig = (
 	process.env.ESBK_TSCONFIG_PATH
 		? {
-			path: process.env.ESBK_TSCONFIG_PATH,
+			path: path.resolve(process.env.ESBK_TSCONFIG_PATH),
 			config: parseTsconfig(process.env.ESBK_TSCONFIG_PATH),
 		}
 		: getTsconfig()
 );
 
-const tsconfigRaw = tsconfig?.config;
+const fileMatcher = tsconfig && createFilesMatcher(tsconfig);
 const tsconfigPathsMatcher = tsconfig && createPathsMatcher(tsconfig);
 
 const applySourceMap = installSourceMapSupport();
@@ -70,7 +71,7 @@ function transformer(
 			code,
 			filePath,
 			{
-				tsconfigRaw: tsconfigRaw as TransformOptions['tsconfigRaw'],
+				tsconfigRaw: fileMatcher?.(filePath) as TransformOptions['tsconfigRaw'],
 			},
 		);
 

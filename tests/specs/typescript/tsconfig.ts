@@ -1,4 +1,5 @@
 import { testSuite, expect } from 'manten';
+import { createFixture } from 'fs-fixture';
 import type { NodeApis } from '../../utils/node-with-loader';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
@@ -8,6 +9,101 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 				cwd: './tsconfig',
 			});
 			expect(nodeProcess.stdout).toBe('div null hello world\nnull null goodbye world');
+		});
+
+		describe('scope', ({ test }) => {
+			const checkStrictMode = `
+			(function (param) {
+				param = 2;
+				const isStrictMode = arguments[0] !== 2;
+				console.log(isStrictMode ? 'strict mode' : 'not strict mode');
+			})(1);
+			`;
+			const checkJsx = 'export default (<div></div>)';
+
+			test('does not apply tsconfig to excluded', async () => {
+				const fixture = await createFixture({
+					'tsconfig.json': JSON.stringify({
+						compilerOptions: {
+							strict: true,
+							jsxFactory: 'console.log',
+						},
+						exclude: [
+							'excluded',
+						],
+					}),
+					included: {
+						'strict-mode-ts.ts': checkStrictMode,
+						'strict-mode-js.js': checkStrictMode,
+						'jsx.jsx': checkJsx,
+						'tsx.tsx': checkJsx,
+					},
+					excluded: {
+						'strict-mode-ts.ts': checkStrictMode,
+						'tsx.tsx': checkJsx,
+					},
+				});
+
+				const includedStrictTs = await node.load('./included/strict-mode-ts.ts', {
+					cwd: fixture.path,
+				});
+				expect(includedStrictTs.stdout).toBe('strict mode');
+
+				const includedStrictJs = await node.load('./included/strict-mode-js.js', {
+					cwd: fixture.path,
+				});
+				expect(includedStrictJs.stdout).toBe('not strict mode');
+
+				const includedJsxTs = await node.load('./included/tsx.tsx', {
+					cwd: fixture.path,
+				});
+				expect(includedJsxTs.stdout).toBe('div null');
+
+				const includedJsxJs = await node.load('./included/jsx.jsx', {
+					cwd: fixture.path,
+				});
+				expect(includedJsxJs.stderr).toMatch('ReferenceError: React is not defined');
+
+				const excludedStrictTs = await node.load('./excluded/strict-mode-ts.ts', {
+					cwd: fixture.path,
+				});
+				expect(excludedStrictTs.stdout).toBe('not strict mode');
+
+				const excludedJsxTs = await node.load('./excluded/tsx.tsx', {
+					cwd: fixture.path,
+				});
+				expect(excludedJsxTs.stderr).toMatch('ReferenceError: React is not defined');
+
+				await fixture.rm();
+			});
+
+			test('allowJs', async () => {
+				const fixture = await createFixture({
+					'tsconfig.json': JSON.stringify({
+						compilerOptions: {
+							strict: true,
+							allowJs: true,
+							jsxFactory: 'console.log',
+						},
+					}),
+					src: {
+						'strict-mode-js.js': checkStrictMode,
+						'jsx.jsx': checkJsx,
+					},
+				});
+
+				const strictJs = await node.load('./src/strict-mode-js.js', {
+					cwd: fixture.path,
+				});
+				expect(strictJs.stdout).toBe('strict mode');
+
+				const jsxJs = await node.load('./src/jsx.jsx', {
+					cwd: fixture.path,
+				});
+				expect(jsxJs.stdout).toBe('div null');
+
+				await fixture.rm();
+			});
 		});
 
 		test('Custom tsconfig.json path', async () => {
