@@ -1,11 +1,14 @@
 {
 	"compilerOptions": {
+		"noEmit": true,
 		"strict": true,
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
-		"outDir": "dist",
+		"skipLibCheck": true,
+
+		"module": "esnext",
 		"target": "esnext",
 
 		// Prevents mts -> mjs conversion
