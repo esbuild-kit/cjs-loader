@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { execaNode, execa } from 'execa';
 import getNode from 'get-node';
 
@@ -11,7 +12,7 @@ type Options = {
 	nodeOptions?: string[];
 };
 
-const cjsLoaderPath = path.resolve(__dirname, '../..');
+const cjsLoaderPath = fileURLToPath(new URL('../..', import.meta.url));
 
 export const nodeWithLoader = async (
 	options: Options,

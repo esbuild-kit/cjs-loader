@@ -1,13 +1,19 @@
 import { testSuite } from 'manten';
-import type { NodeApis } from '../../utils/node-with-loader';
-import specCjs from './cjs';
-import specEsm from './esm';
-import specDependencies from './dependencies';
+import type { NodeApis } from '../../utils/node-with-loader.js';
 
 export default testSuite(async ({ describe }, node: NodeApis) => {
 	describe('JavaScript', ({ runTestSuite }) => {
-		runTestSuite(specCjs, node);
-		runTestSuite(specEsm, node);
-		runTestSuite(specDependencies, node);
+		runTestSuite(
+			import('./cjs.js'),
+			node,
+		);
+		runTestSuite(
+			import('./esm.js'),
+			node,
+		);
+		runTestSuite(
+			import('./dependencies.js'),
+			node,
+		);
 	});
 });

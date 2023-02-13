@@ -1,20 +1,13 @@
 {
 	"compilerOptions": {
+		"noEmit": true,
 		"strict": true,
 		"isolatedModules": true,
 		"esModuleInterop": true,
-		"moduleResolution": "node",
 		"resolveJsonModule": true,
-		"outDir": "dist",
+		"module": "Node16",
 		"target": "esnext",
-
-		// Prevents mts -> mjs conversion
-		// "moduleResolution": "node",
 	},
-	"include": [
-		"src",
-		"tests"
-	],
 	"exclude": [
 		"tests/fixtures"
 	]
