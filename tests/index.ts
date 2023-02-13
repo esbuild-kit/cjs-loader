@@ -1,5 +1,5 @@
 import { describe } from 'manten';
-import { createNode } from './utils/node-with-loader';
+import { createNode } from './utils/node-with-loader.js';
 
 const nodeVersions = [
 	'12.16.2', // Pre ESM import
@@ -22,13 +22,11 @@ const nodeVersions = [
 
 		await describe(`Node ${node.version}`, ({ runTestSuite }) => {
 			runTestSuite(
-				// eslint-disable-next-line node/global-require,@typescript-eslint/no-var-requires
-				(require('./specs/javascript') as typeof import('./specs/javascript')).default,
+				import('./specs/javascript/index.js'),
 				node,
 			);
 			runTestSuite(
-				// eslint-disable-next-line node/global-require,@typescript-eslint/no-var-requires
-				(require('./specs/typescript') as typeof import('./specs/typescript')).default,
+				import('./specs/typescript/index.js'),
 				node,
 			);
 		});
