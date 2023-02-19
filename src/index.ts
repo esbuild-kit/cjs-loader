@@ -43,12 +43,14 @@ function getProjectsMap(tsconfigPath?: string, projectsMap?: Map<string, {
 	}
 
 	if (!projectsMap.has(tsconfig.path)) {
-		projectsMap.set(tsconfig.path, {
-			tsconfig,
-			tsconfigPathsMatcher: tsconfig && createPathsMatcher(tsconfig),
-			fileMatcher: tsconfig && createFilesMatcher(tsconfig),
-		});
+		return projectsMap;
 	}
+
+	projectsMap.set(tsconfig.path, {
+		tsconfig,
+		tsconfigPathsMatcher: tsconfig && createPathsMatcher(tsconfig),
+		fileMatcher: tsconfig && createFilesMatcher(tsconfig),
+	});
 
 	tsconfig?.config?.references?.forEach((reference) => {
 		const referencedTsconfigPath = reference.path.endsWith('.json') ? reference.path : path.join(reference.path, 'tsconfig.json');
