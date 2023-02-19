@@ -20,17 +20,45 @@ const isPathPattern = /^\.{0,2}\//;
 const isTsFilePatten = /\.[cm]?tsx?$/;
 const nodeModulesPath = `${path.sep}node_modules${path.sep}`;
 
-const tsconfig = (
-	process.env.ESBK_TSCONFIG_PATH
-		? {
-			path: path.resolve(process.env.ESBK_TSCONFIG_PATH),
-			config: parseTsconfig(process.env.ESBK_TSCONFIG_PATH),
-		}
-		: getTsconfig()
-);
+function getProjectsMap(tsconfigPath?: string, projectsMap?: Map<string, {
+	tsconfig: ReturnType<typeof getTsconfig>;
+	tsconfigPathsMatcher: ReturnType<typeof createPathsMatcher>;
+	fileMatcher: ReturnType<typeof createFilesMatcher>;
+}>) {
+	if (!projectsMap) {
+		projectsMap = new Map();
+	}
 
-const fileMatcher = tsconfig && createFilesMatcher(tsconfig);
-const tsconfigPathsMatcher = tsconfig && createPathsMatcher(tsconfig);
+	const tsconfig = (
+		tsconfigPath
+			? {
+				path: path.resolve(tsconfigPath),
+				config: parseTsconfig(tsconfigPath),
+			}
+			: getTsconfig()
+	);
+
+	if (!tsconfig) {
+		return projectsMap;
+	}
+
+	const packageName = JSON.parse(fs.readFileSync(path.join(path.dirname(tsconfig.path), 'package.json'), 'utf8')).name as string;
+
+	projectsMap.set(packageName, {
+		tsconfig,
+		tsconfigPathsMatcher: tsconfig && createPathsMatcher(tsconfig),
+		fileMatcher: tsconfig && createFilesMatcher(tsconfig),
+	});
+
+	tsconfig?.config?.references?.forEach((reference) => {
+		const referencedTsconfigPath = reference.path.endsWith('.json') ? reference.path : path.join(reference.path, 'tsconfig.json');
+		projectsMap = getProjectsMap(referencedTsconfigPath, projectsMap);
+	});
+
+	return projectsMap;
+}
+
+export const projectsMap = getProjectsMap(process.env.ESBK_TSCONFIG_PATH);
 
 const applySourceMap = installSourceMapSupport();
 
@@ -67,11 +95,18 @@ function transformer(
 			code = applySourceMap(transformed, filePath);
 		}
 	} else {
+		let tsconfigRaw: TransformOptions['tsconfigRaw'];
+		for (const project of projectsMap.values()) {
+			tsconfigRaw = project.fileMatcher(filePath) as TransformOptions['tsconfigRaw'];
+			if (tsconfigRaw) {
+				break;
+			}
+		}
 		const transformed = transformSync(
 			code,
 			filePath,
 			{
-				tsconfigRaw: fileMatcher?.(filePath) as TransformOptions['tsconfigRaw'],
+				tsconfigRaw,
 			},
 		);
 
@@ -131,7 +166,7 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 	}
 
 	if (
-		tsconfigPathsMatcher
+		projectsMap.size > 0
 
 		// bare specifier
 		&& !isPathPattern.test(request)
@@ -139,7 +174,15 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 		// Dependency paths should not be resolved using tsconfig.json
 		&& !parent?.filename?.includes(nodeModulesPath)
 	) {
-		const possiblePaths = tsconfigPathsMatcher(request);
+		const possiblePaths: string[] = [];
+		projectsMap.forEach((project) => {
+			if (project.tsconfigPathsMatcher) {
+				const possibleProjectPaths = project.tsconfigPathsMatcher(request);
+				if (possibleProjectPaths) {
+					possiblePaths.push(...possibleProjectPaths);
+				}
+			}
+		});
 
 		for (const possiblePath of possiblePaths) {
 			const tsFilename = resolveTsFilename.call(this, possiblePath, parent, isMain, options);
@@ -155,7 +198,7 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 					isMain,
 					options,
 				);
-			} catch {}
+			} catch { }
 		}
 	}
 
