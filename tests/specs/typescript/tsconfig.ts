@@ -13,11 +13,8 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 
 		describe('scope', ({ test }) => {
 			const checkStrictMode = `
-			(function (param) {
-				param = 2;
-				const isStrictMode = arguments[0] !== 2;
-				console.log(isStrictMode ? 'strict mode' : 'not strict mode');
-			})(1);
+			const isStrictMode = (function() { return this; })() === undefined;
+			console.log(isStrictMode ? 'strict mode' : 'not strict mode');
 			`;
 			const checkJsx = 'export default (<div></div>)';
 

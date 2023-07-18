@@ -16,6 +16,8 @@ Node.js `require()` hook to instantaneously transform ESM & TypeScript to Common
 >
 > Use this with [esm-loader](https://github.com/esbuild-kit/esm-loader) for `import()` support. Alternatively, use [tsx](https://github.com/esbuild-kit/tsx) to handle them both automatically.
 
+<sub>Found this package useful? Show your support & appreciation by [sponsoring](https://github.com/sponsors/privatenumber)! ❤️</sub>
+
 ## Install
 
 ```sh
@@ -63,3 +65,11 @@ ESBK_DISABLE_CACHE=1 node -r @esbuild-kit/cjs-loader ./file.js
 - [tsx](https://github.com/esbuild-kit/tsx) - Node.js runtime powered by esbuild using [`@esbuild-kit/cjs-loader`](https://github.com/esbuild-kit/cjs-loader) and [`@esbuild-kit/esm-loader`](https://github.com/esbuild-kit/esm-loader).
 
 - [@esbuild-kit/esm-loader](https://github.com/esbuild-kit/esm-loader) - TypeScript to ESM transpiler using the Node.js loader API.
+
+
+## Sponsors
+<p align="center">
+	<a href="https://github.com/sponsors/privatenumber">
+		<img src="https://cdn.jsdelivr.net/gh/privatenumber/sponsors/sponsorkit/sponsors.svg">
+	</a>
+</p>
