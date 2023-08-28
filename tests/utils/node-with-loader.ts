@@ -45,8 +45,6 @@ export async function createNode(
 		arch: 'x64',
 	});
 
-	console.log('downloaded', node);
-
 	return {
 		version: node.version,
 		load(

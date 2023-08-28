@@ -7,13 +7,13 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			import('./cjs.js'),
 			node,
 		);
-		// runTestSuite(
-		// 	import('./esm.js'),
-		// 	node,
-		// );
-		// runTestSuite(
-		// 	import('./dependencies.js'),
-		// 	node,
-		// );
+		runTestSuite(
+			import('./esm.js'),
+			node,
+		);
+		runTestSuite(
+			import('./dependencies.js'),
+			node,
+		);
 	});
 });
