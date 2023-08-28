@@ -10,17 +10,19 @@ declare global {
 
 declare module 'module' {
 	export const _extensions: NodeJS.RequireExtensions;
+
+	export type Parent = {
+		/**
+		 * Can be null if the parent id is 'internal/preload' (e.g. via --require)
+		 * which doesn't have a file path.
+		 */
+		filename: string | null;
+	};
+
 	export function _resolveFilename(
 		request: string,
-		parent: {
-
-			/**
-			 * Can be null if the parent id is 'internal/preload' (e.g. via --require)
-			 * which doesn't have a file path.
-			 */
-			filename: string | null;
-		},
+		parent: Parent,
 		isMain: boolean,
-		options?: any,
+		options?: Record<PropertyKey, unknown>,
 	): string;
 }
