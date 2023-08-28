@@ -17,7 +17,6 @@ import {
 import type { TransformOptions } from 'esbuild';
 
 const isPathPattern = /^\.{0,2}\//;
-const isTsFilePatten = /\.[cm]?tsx?$/;
 const nodeModulesPath = `${path.sep}node_modules${path.sep}`;
 
 const tsconfig = (
