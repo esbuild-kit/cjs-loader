@@ -3,14 +3,14 @@ import { createNode } from './utils/node-with-loader.js';
 
 const nodeVersions = [
 	'12.16.2', // Pre ESM import
-	'12.22.11',
+	'12',
 	...(
 		process.env.CI
 			? [
-				'14.19.1',
-				'16.14.2',
-				'17.8.0',
-				'18.0.0',
+				'14',
+				'16',
+				'17',
+				'18',
 			]
 			: []
 	),
