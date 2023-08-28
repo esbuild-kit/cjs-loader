@@ -27,14 +27,14 @@
 	"main": "./dist/index.cjs",
 	"exports": "./dist/index.cjs",
 	"scripts": {
-		"build": "pkgroll --target node12.20",
+		"build": "pkgroll --target node12.20 --minify",
 		"lint": "eslint .",
 		"type-check": "tsc --noEmit",
 		"test": "pnpm build && tsx tests/index.ts",
 		"prepack": "pnpm build && clean-pkg-json"
 	},
 	"dependencies": {
-		"@esbuild-kit/core-utils": "^3.2.0",
+		"@esbuild-kit/core-utils": "^3.2.1",
 		"get-tsconfig": "^4.7.0"
 	},
 	"devDependencies": {
