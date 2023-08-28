@@ -167,19 +167,27 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 	return resolveFilename.call(this, request, parent, isMain, options);
 };
 
+type NodeError = Error & {
+	code: string;
+};
+
 /**
  * Typescript gives .ts, .cts, or .mts priority over actual .js, .cjs, or .mjs extensions
  */
 function resolveTsFilename(
 	this: ThisType<typeof resolveFilename>,
 	request: string,
-	parent: any,
+	parent: Module.Parent,
 	isMain: boolean,
-	options?: any,
+	options?: Record<PropertyKey, unknown>,
 ) {
 	const tsPath = resolveTsPath(request);
 
-	if (parent && isTsFilePatten.test(parent.filename) && tsPath) {
+	if (
+		parent?.filename
+		&& isTsFilePatten.test(parent.filename)
+		&& tsPath
+	) {
 		try {
 			return resolveFilename.call(
 				this,
@@ -189,7 +197,7 @@ function resolveTsFilename(
 				options,
 			);
 		} catch (error) {
-			const { code } = error as any;
+			const { code } = error as NodeError;
 			if (
 				code !== 'MODULE_NOT_FOUND'
 				&& code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED'
