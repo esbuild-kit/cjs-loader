@@ -2,9 +2,8 @@ import { describe } from 'manten';
 import { createNode } from './utils/node-with-loader.js';
 
 const nodeVersions = [
-	// '12.16.2', // Pre ESM import
-	// '12',
-	'20',
+	'12.16.2', // Pre ESM import
+	'12',
 	...(
 		process.env.CI
 			? [
