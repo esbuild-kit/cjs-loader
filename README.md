@@ -1,6 +1,6 @@
 # cjs-loader
 
-Node.js `require()` hook for loading ESM & TypeScript using [esbuild](https://esbuild.github.io/).
+Node.js `require()` hook for loading ESM & TypeScript.
 
 ### Features
 - Transforms ESM & TypeScript to CommonJS on demand
@@ -10,11 +10,13 @@ Node.js `require()` hook for loading ESM & TypeScript using [esbuild](https://es
 - Handles `node:` import prefixes
 - Resolves `tsconfig.json` [`paths`](https://www.typescriptlang.org/tsconfig#paths)
 
-> **Tip:**
+> **Protip:** use with _esm-loader_ or _tsx_
 >
-> _cjs-loader_ doesn't hook into dynamic `import()` calls.
+>  _cjs-loader_ only transforms CommonJS modules (`.cjs`/`.cts` or `.js` files in `commonjs` type packages).
 >
-> Use this with [esm-loader](https://github.com/esbuild-kit/esm-loader) for `import()` support. Alternatively, use [tsx](https://github.com/esbuild-kit/tsx) to handle them both automatically.
+> To hook into `import()` calls or ES modules (`.mjs`/`.mts` extensions or `.js` files in `module` type packages), use this with [esm-loader](https://github.com/esbuild-kit/esm-loader).
+>
+> Alternatively, use [tsx](https://github.com/esbuild-kit/tsx) to handle them both automatically.
 
 <br>
 
