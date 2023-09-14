@@ -30,6 +30,10 @@ const nodeVersions = [
 				import('./specs/typescript/index.js'),
 				node,
 			);
+			runTestSuite(
+				import('./specs/negative-tests.js'),
+				node,
+			);
 		});
 	}
 })();

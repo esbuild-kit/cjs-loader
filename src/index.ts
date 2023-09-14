@@ -45,10 +45,29 @@ const nodeSupportsImport = (
 	)
 );
 
+const extensions = Module._extensions;
+const defaultLoader = extensions['.js'];
+
+const transformExtensions = [
+	'.js',
+	'.cjs',
+	'.cts',
+	'.mjs',
+	'.mts',
+	'.ts',
+	'.tsx',
+	'.jsx',
+];
+
 function transformer(
 	module: Module,
 	filePath: string,
 ) {
+	const shouldTransformFile = transformExtensions.some(extension => filePath.endsWith(extension));
+	if (!shouldTransformFile) {
+		return defaultLoader(module, filePath);
+	}
+
 	/**
 	 * For tracking dependencies in watch mode
 	 */
@@ -81,14 +100,19 @@ function transformer(
 	module._compile(code, filePath);
 }
 
-const extensions = Module._extensions;
-
-/**
- * Loaders for implicitly resolvable extensions
- * https://github.com/nodejs/node/blob/v12.16.0/lib/internal/modules/cjs/loader.js#L1166
- */
 [
-	'.js', // (Handles .cjs, .cts, .mts & any explicitly specified extension that doesn't match any loaders)
+	/**
+	 * Handles .cjs, .cts, .mts & any explicitly specified extension that doesn't match any loaders
+	 *
+	 * Any file requested with an explicit extension will be loaded using the .js loader:
+	 * https://github.com/nodejs/node/blob/e339e9c5d71b72fd09e6abd38b10678e0c592ae7/lib/internal/modules/cjs/loader.js#L430
+	 */
+	'.js',
+
+	/**
+	 * Loaders for implicitly resolvable extensions
+	 * https://github.com/nodejs/node/blob/v12.16.0/lib/internal/modules/cjs/loader.js#L1166
+	 */
 	'.ts',
 	'.tsx',
 	'.jsx',
