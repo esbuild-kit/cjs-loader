@@ -41,7 +41,9 @@ export async function createNode(
 	nodeVersion: string,
 	fixturePath: string,
 ) {
-	const node = await getNode(nodeVersion);
+	const node = await getNode(nodeVersion, {
+		arch: 'x64',
+	});
 
 	return {
 		version: node.version,

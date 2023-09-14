@@ -30,7 +30,7 @@
 		"build": "pkgroll --target node12.20 --minify",
 		"lint": "eslint .",
 		"type-check": "tsc --noEmit",
-		"test": "pnpm build && tsx tests/index.ts",
+		"test": "tsx tests/index.ts",
 		"prepack": "pnpm build && clean-pkg-json"
 	},
 	"dependencies": {
