@@ -16,7 +16,7 @@ import {
 } from 'get-tsconfig';
 import type { TransformOptions } from 'esbuild';
 
-const isPathPattern = /^\.{0,2}\//;
+const isRelativePathPattern = /^\.{1,2}\//;
 const isTsFilePatten = /\.[cm]?tsx?$/;
 const nodeModulesPath = `${path.sep}node_modules${path.sep}`;
 
@@ -158,7 +158,7 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 		tsconfigPathsMatcher
 
 		// bare specifier
-		&& !isPathPattern.test(request)
+		&& !isRelativePathPattern.test(request)
 
 		// Dependency paths should not be resolved using tsconfig.json
 		&& !parent?.filename?.includes(nodeModulesPath)
