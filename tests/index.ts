@@ -4,7 +4,10 @@ import { createNode } from './utils/node-with-loader.js';
 const nodeVersions = [
 	'20',
 	...(
-		process.env.CI
+		(
+			process.env.CI
+			&& process.platform !== 'win32'
+		)
 			? [
 				'12.16.2', // Pre ESM import
 				'12',
