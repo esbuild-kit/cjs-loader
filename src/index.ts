@@ -63,7 +63,7 @@ function transformer(
 	module: Module,
 	filePath: string,
 ) {
-	const shouldTransformFile = transformExtensions.some((ext) => filePath.endsWith(ext));
+	const shouldTransformFile = transformExtensions.some(extension => filePath.endsWith(extension));
 	if (!shouldTransformFile) {
 		return defaultLoader(module, filePath);
 	}
