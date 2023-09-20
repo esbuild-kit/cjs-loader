@@ -146,7 +146,7 @@ const supportsNodePrefix = (
 );
 
 // Add support for "node:" protocol
-const resolveFilename = Module._resolveFilename.bind(Module);
+const defaultResolveFilename = Module._resolveFilename.bind(Module);
 Module._resolveFilename = (request, parent, isMain, options) => {
 	// Added in v12.20.0
 	// https://nodejs.org/api/esm.html#esm_node_imports
@@ -172,7 +172,7 @@ Module._resolveFilename = (request, parent, isMain, options) => {
 			}
 
 			try {
-				return resolveFilename(
+				return defaultResolveFilename(
 					possiblePath,
 					parent,
 					isMain,
@@ -187,7 +187,7 @@ Module._resolveFilename = (request, parent, isMain, options) => {
 		return tsFilename;
 	}
 
-	return resolveFilename(request, parent, isMain, options);
+	return defaultResolveFilename(request, parent, isMain, options);
 };
 
 type NodeError = Error & {
@@ -211,7 +211,7 @@ const resolveTsFilename = (
 		&& tsPath
 	) {
 		try {
-			return resolveFilename(
+			return defaultResolveFilename(
 				tsPath,
 				parent,
 				isMain,
