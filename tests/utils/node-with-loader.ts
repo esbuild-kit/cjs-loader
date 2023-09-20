@@ -105,17 +105,17 @@ export async function createNode(
 				`,
 			);
 
-			const nodeProcess = await nodeWithLoader({
-				args: [
-					importerFileName,
-				],
-				nodePath: node.path,
-				cwd: fixturePath,
-			});
-
-			await fs.rm(importerFilePath);
-
-			return nodeProcess;
+			try {
+				return await nodeWithLoader({
+					args: [
+						importerFileName,
+					],
+					nodePath: node.path,
+					cwd: fixturePath,
+				});	
+			} finally {
+				await fs.rm(importerFilePath);
+			}
 		},
 		require(
 			filePath: string,

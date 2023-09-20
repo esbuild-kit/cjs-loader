@@ -47,6 +47,62 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 		});
 
+		describe('full path via js', ({ test }) => {
+			const importPath = './lib/ts-ext-tsx/index.js';
+
+			test('Load - should not work', async () => {
+				const nodeProcess = await node.load(importPath);
+				expect(nodeProcess.stderr).toMatch('Cannot find module');
+			});
+
+			test('Import', async () => {
+				const nodeProcess = await node.importDynamic(importPath);
+
+				if (semver.satisfies(node.version, nodeSupports.import)) {
+					expect(nodeProcess.stderr).toMatch('Cannot find module');
+				} else {
+					assertResults(nodeProcess.stdout);
+					expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
+				}
+			});
+
+			test('Require', async () => {
+				const nodeProcess = await node.require(importPath, {
+					typescript: true,
+				});
+				assertResults(nodeProcess.stdout);
+				expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
+			});
+		});
+
+		describe('full path via jsx', ({ test }) => {
+			const importPath = './lib/ts-ext-tsx/index.jsx';
+
+			test('Load - should not work', async () => {
+				const nodeProcess = await node.load(importPath);
+				expect(nodeProcess.stderr).toMatch('Cannot find module');
+			});
+
+			test('Import', async () => {
+				const nodeProcess = await node.importDynamic(importPath);
+
+				if (semver.satisfies(node.version, nodeSupports.import)) {
+					expect(nodeProcess.stderr).toMatch('Cannot find module');
+				} else {
+					assertResults(nodeProcess.stdout);
+					expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
+				}
+			});
+
+			test('Require', async () => {
+				const nodeProcess = await node.require(importPath, {
+					typescript: true,
+				});
+				assertResults(nodeProcess.stdout);
+				expect(nodeProcess.stdout).toMatch('{"default":["div",null,"hello world"]}');
+			});
+		});
+
 		describe('extensionless', ({ test }) => {
 			const importPath = './lib/ts-ext-tsx/index';
 
