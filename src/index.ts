@@ -59,10 +59,10 @@ const transformExtensions = [
 	'.jsx',
 ];
 
-function transformer(
+const transformer = (
 	module: Module,
 	filePath: string,
-) {
+) => {
 	const shouldTransformFile = transformExtensions.some(extension => filePath.endsWith(extension));
 	if (!shouldTransformFile) {
 		return defaultLoader(module, filePath);
@@ -98,7 +98,7 @@ function transformer(
 	}
 
 	module._compile(code, filePath);
-}
+};
 
 [
 	/**
@@ -146,8 +146,8 @@ const supportsNodePrefix = (
 );
 
 // Add support for "node:" protocol
-const resolveFilename = Module._resolveFilename;
-Module._resolveFilename = function (request, parent, isMain, options) {
+const resolveFilename = Module._resolveFilename.bind(Module);
+Module._resolveFilename = (request, parent, isMain, options) => {
 	// Added in v12.20.0
 	// https://nodejs.org/api/esm.html#esm_node_imports
 	if (!supportsNodePrefix && request.startsWith('node:')) {
@@ -166,14 +166,13 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 		const possiblePaths = tsconfigPathsMatcher(request);
 
 		for (const possiblePath of possiblePaths) {
-			const tsFilename = resolveTsFilename.call(this, possiblePath, parent, isMain, options);
+			const tsFilename = resolveTsFilename(possiblePath, parent, isMain, options);
 			if (tsFilename) {
 				return tsFilename;
 			}
 
 			try {
-				return resolveFilename.call(
-					this,
+				return resolveFilename(
 					possiblePath,
 					parent,
 					isMain,
@@ -183,12 +182,12 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 		}
 	}
 
-	const tsFilename = resolveTsFilename.call(this, request, parent, isMain, options);
+	const tsFilename = resolveTsFilename(request, parent, isMain, options);
 	if (tsFilename) {
 		return tsFilename;
 	}
 
-	return resolveFilename.call(this, request, parent, isMain, options);
+	return resolveFilename(request, parent, isMain, options);
 };
 
 type NodeError = Error & {
@@ -198,13 +197,12 @@ type NodeError = Error & {
 /**
  * Typescript gives .ts, .cts, or .mts priority over actual .js, .cjs, or .mjs extensions
  */
-function resolveTsFilename(
-	this: ThisType<typeof resolveFilename>,
+const resolveTsFilename = (
 	request: string,
 	parent: Module.Parent,
 	isMain: boolean,
 	options?: Record<PropertyKey, unknown>,
-) {
+) => {
 	const tsPath = resolveTsPath(request);
 
 	if (
@@ -213,8 +211,7 @@ function resolveTsFilename(
 		&& tsPath
 	) {
 		try {
-			return resolveFilename.call(
-				this,
+			return resolveFilename(
 				tsPath,
 				parent,
 				isMain,
@@ -230,4 +227,4 @@ function resolveTsFilename(
 			}
 		}
 	}
-}
+};
