@@ -87,11 +87,38 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 		});
 
+		describe('full path via .jsx', ({ test }) => {
+			const importPath = './lib/ts-ext-ts/index.jsx';
+
+			test('Load - should not work', async () => {
+				const nodeProcess = await node.load(importPath);
+				expect(nodeProcess.stderr).toMatch('Cannot find module');
+			});
+
+			test('Import', async () => {
+				const nodeProcess = await node.importDynamic(importPath, { mode: 'typescript' });
+
+				if (semver.satisfies(node.version, nodeSupports.import)) {
+					expect(nodeProcess.stderr).toMatch('Cannot find module');
+				} else {
+					assertResults(nodeProcess.stdout);
+					expect(nodeProcess.stdout).toMatch('{"default":1234}');
+				}
+			});
+
+			test('Require', async () => {
+				const nodeProcess = await node.require(importPath, { typescript: true });
+				assertResults(nodeProcess.stdout);
+				expect(nodeProcess.stdout).toMatch('{"default":1234}');
+			});
+		});
+
 		describe('extensionless', ({ test }) => {
 			const importPath = './lib/ts-ext-ts/index';
 
 			test('Load', async () => {
 				const nodeProcess = await node.load(importPath);
+				console.log({ nodeProcess });
 				assertResults(nodeProcess.stdout);
 			});
 
@@ -107,7 +134,10 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 
 			test('Require', async () => {
-				const nodeProcess = await node.require(importPath);
+				const nodeProcess = await node.require(importPath, {
+					// Breaking change?
+					typescript: true,
+				});
 				assertResults(nodeProcess.stdout);
 				expect(nodeProcess.stdout).toMatch('{"default":1234}');
 			});
@@ -133,7 +163,9 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 
 			test('Require', async () => {
-				const nodeProcess = await node.require(importPath);
+				const nodeProcess = await node.require(importPath, {
+					typescript: true,
+				});
 				assertResults(nodeProcess.stdout, 'loaded ts-ext-ts/index.tsx.ts\n');
 				expect(nodeProcess.stdout).toMatch('{"default":1234}');
 			});
@@ -159,7 +191,9 @@ export default testSuite(async ({ describe }, node: NodeApis) => {
 			});
 
 			test('Require', async () => {
-				const nodeProcess = await node.require(importPath);
+				const nodeProcess = await node.require(importPath, {
+					typescript: true,
+				});
 				assertResults(nodeProcess.stdout);
 				expect(nodeProcess.stdout).toMatch('{"default":1234}');
 			});

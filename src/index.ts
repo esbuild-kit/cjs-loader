@@ -4,7 +4,7 @@ import Module from 'module';
 import {
 	transformSync,
 	installSourceMapSupport,
-	resolveTsPath,
+	// resolveTsPath,
 	transformDynamicImport,
 	compareNodeVersion,
 } from '@esbuild-kit/core-utils';
@@ -15,6 +15,40 @@ import {
 	createFilesMatcher,
 } from 'get-tsconfig';
 import type { TransformOptions } from 'esbuild';
+
+// import path from 'path';
+
+const tsExtensions: Record<string, string[]> = Object.create(null);
+tsExtensions[''] = ['.ts', '.tsx', '.js', '.jsx'];
+tsExtensions['.js'] = ['.ts', '.tsx', '.js', '.jsx'];
+tsExtensions['.jsx'] = ['.tsx', '.ts', '.jsx', '.js'];
+tsExtensions['.cjs'] = ['.cts'];
+tsExtensions['.mjs'] = ['.mts'];
+
+const resolveTsPath = (
+	filePath: string,
+) => {
+	const extension = path.extname(filePath);
+	const [extensionNoQuery, query] = path.extname(filePath).split('?');
+	const possibleExtensions = tsExtensions[extensionNoQuery];
+
+	if (possibleExtensions) {
+		const extensionlessPath = filePath.slice(
+			0,
+			// If there's no extension (0), slicing to 0 returns an empty path
+			-extension.length || undefined,
+		);
+		return possibleExtensions.map(
+			tsExtension => (
+				extensionlessPath
+				+ tsExtension
+				+ (query ? `?${query}` : '')
+			),
+		);
+	}
+};
+
+
 
 const isRelativePathPattern = /^\.{1,2}\//;
 const isTsFilePatten = /\.[cm]?tsx?$/;
@@ -109,15 +143,29 @@ const transformer = (
 	 */
 	'.js',
 
-	/**
-	 * Loaders for implicitly resolvable extensions
-	 * https://github.com/nodejs/node/blob/v12.16.0/lib/internal/modules/cjs/loader.js#L1166
-	 */
-	'.ts',
-	'.tsx',
-	'.jsx',
+	// /**
+	//  * Loaders for implicitly resolvable extensions
+	//  * https://github.com/nodejs/node/blob/v12.16.0/lib/internal/modules/cjs/loader.js#L1166
+	//  */
+	// '.ts',
+	// '.tsx',
+	// '.jsx',
 ].forEach((extension) => {
 	extensions[extension] = transformer;
+});
+
+[
+	'.ts',
+	'.tsx',
+	'.jsx'
+].forEach((ext) => {
+	Object.defineProperty(extensions, ext, {
+		value: transformer,
+	
+		// Prevent Object.keys from detecting these extensions
+		// when CJS loader iterates over the possible extensions
+		enumerable: false,
+	});	
 });
 
 /**
@@ -146,7 +194,7 @@ const supportsNodePrefix = (
 );
 
 // Add support for "node:" protocol
-const resolveFilename = Module._resolveFilename.bind(Module);
+const defaultResolveFilename = Module._resolveFilename.bind(Module);
 Module._resolveFilename = (request, parent, isMain, options) => {
 	// Added in v12.20.0
 	// https://nodejs.org/api/esm.html#esm_node_imports
@@ -172,7 +220,7 @@ Module._resolveFilename = (request, parent, isMain, options) => {
 			}
 
 			try {
-				return resolveFilename(
+				return defaultResolveFilename(
 					possiblePath,
 					parent,
 					isMain,
@@ -187,7 +235,7 @@ Module._resolveFilename = (request, parent, isMain, options) => {
 		return tsFilename;
 	}
 
-	return resolveFilename(request, parent, isMain, options);
+	return defaultResolveFilename(request, parent, isMain, options);
 };
 
 type NodeError = Error & {
@@ -203,28 +251,35 @@ const resolveTsFilename = (
 	isMain: boolean,
 	options?: Record<PropertyKey, unknown>,
 ) => {
-	const tsPath = resolveTsPath(request);
+	const parentFileName = parent?.filename ?? parent?.id;
+	if (!parentFileName || !isTsFilePatten.test(parentFileName)) {
+		return;
+	}
 
-	if (
-		parent?.filename
-		&& isTsFilePatten.test(parent.filename)
-		&& tsPath
-	) {
-		try {
-			return resolveFilename(
-				tsPath,
-				parent,
-				isMain,
-				options,
-			);
-		} catch (error) {
-			const { code } = error as NodeError;
-			if (
-				code !== 'MODULE_NOT_FOUND'
-				&& code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED'
-			) {
-				throw error;
+	const tsPaths = resolveTsPath(request);
+	if (tsPaths) {
+		for (const tsPath of tsPaths) {
+			try {
+				return defaultResolveFilename(
+					tsPath,
+					parent,
+					isMain,
+					options,
+				);
+			} catch (error) {
+				const { code } = error as NodeError;
+				if (
+					code !== 'MODULE_NOT_FOUND'
+					&& code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED'
+				) {
+					throw error;
+				}
 			}
 		}
+
+		console.log('add index', {
+			request,
+			parent,
+		});
 	}
 };
