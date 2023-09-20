@@ -112,7 +112,7 @@ export async function createNode(
 					],
 					nodePath: node.path,
 					cwd: fixturePath,
-				});	
+				});
 			} finally {
 				await fs.rm(importerFilePath);
 			}

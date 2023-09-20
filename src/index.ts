@@ -93,10 +93,10 @@ const transformExtensions = [
 	'.jsx',
 ];
 
-function transformer(
+const transformer = (
 	module: Module,
 	filePath: string,
-) {
+) => {
 	const shouldTransformFile = transformExtensions.some(extension => filePath.endsWith(extension));
 	if (!shouldTransformFile) {
 		return defaultLoader(module, filePath);
@@ -132,7 +132,7 @@ function transformer(
 	}
 
 	module._compile(code, filePath);
-}
+};
 
 [
 	/**
@@ -195,7 +195,7 @@ const supportsNodePrefix = (
 
 // Add support for "node:" protocol
 const defaultResolveFilename = Module._resolveFilename.bind(Module);
-Module._resolveFilename = function (request, parent, isMain, options) {
+Module._resolveFilename = (request, parent, isMain, options) => {
 	// Added in v12.20.0
 	// https://nodejs.org/api/esm.html#esm_node_imports
 	if (!supportsNodePrefix && request.startsWith('node:')) {
@@ -220,8 +220,7 @@ Module._resolveFilename = function (request, parent, isMain, options) {
 			}
 
 			try {
-				return defaultResolveFilename.call(
-					this,
+				return defaultResolveFilename(
 					possiblePath,
 					parent,
 					isMain,
@@ -246,12 +245,12 @@ type NodeError = Error & {
 /**
  * Typescript gives .ts, .cts, or .mts priority over actual .js, .cjs, or .mjs extensions
  */
-function resolveTsFilename(
+const resolveTsFilename = (
 	request: string,
 	parent: Module.Parent,
 	isMain: boolean,
 	options?: Record<PropertyKey, unknown>,
-) {
+) => {
 	const parentFileName = parent?.filename ?? parent?.id;
 	if (!parentFileName || !isTsFilePatten.test(parentFileName)) {
 		return;
@@ -283,4 +282,4 @@ function resolveTsFilename(
 			parent,
 		});
 	}
-}
+};
