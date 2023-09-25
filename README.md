@@ -1,3 +1,13 @@
+---
+
+> ## ⚠️ Project moved. Repository unmaintained.
+>
+> This project has been merged with [tsx](https://github.com/esbuild-kit/tsx) and this repository is no longer maintained.
+> 
+> Use tsx instead: `node --require tsx/cjs ./file.ts`
+
+---
+
 # cjs-loader
 
 Node.js `require()` hook for loading ESM & TypeScript.
