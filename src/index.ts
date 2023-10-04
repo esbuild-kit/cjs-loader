@@ -13,6 +13,7 @@ import {
 	parseTsconfig,
 	createPathsMatcher,
 	createFilesMatcher,
+	TsConfigResult,
 } from 'get-tsconfig';
 import type { TransformOptions } from 'esbuild';
 
@@ -20,13 +21,14 @@ const isRelativePathPattern = /^\.{1,2}\//;
 const isTsFilePatten = /\.[cm]?tsx?$/;
 const nodeModulesPath = `${path.sep}node_modules${path.sep}`;
 
+const tsconfigCache = new Map<string, TsConfigResult>();
 const tsconfig = (
 	process.env.ESBK_TSCONFIG_PATH
 		? {
 			path: path.resolve(process.env.ESBK_TSCONFIG_PATH),
-			config: parseTsconfig(process.env.ESBK_TSCONFIG_PATH),
+			config: parseTsconfig(process.env.ESBK_TSCONFIG_PATH, tsconfigCache),
 		}
-		: getTsconfig()
+		: getTsconfig(undefined, undefined, tsconfigCache)
 );
 
 const fileMatcher = tsconfig && createFilesMatcher(tsconfig);
